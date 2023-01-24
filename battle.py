@@ -1,6 +1,5 @@
 import time
 import random
-from numpy.random import choice
 import var
 
 
@@ -45,18 +44,26 @@ def battle_start(tutorial):
 
     if player_weapon == 'nuclear bomb':
         print('You choose such an overpowered weapon that you automatically won the game!')
-        win = True
+        var.win = True
     elif player_weapon == 'machine gun':
-        print('Good choice. Your attack is now +10')
+        print('Good choice. Your weapon gave you +10 attack bonous')
         var.player_attack += 10
     elif player_weapon == 'water gun':
         print('Your weapon wasn\'t enough to take down a village. You automatically lost.')
-        loose = True
+        var.loose = True
     elif player_weapon == 'stick':
         print('Bro what were you thinking. Your stick broke during battle. Now you have no weapon attack bonous.')
     else:
         print('Good Choice. Your weapon gave you +5 attack bonous.')
         var.player_attack += 5
+    print(var.player_attack)
+
+    if var.win == True:
+      time.sleep(2)
+      exit()
+    elif var.loose == True:
+      time.sleep(2)
+      exit()
 
     time.sleep(2)
     battle(player_weapon)
@@ -69,10 +76,12 @@ def battle(player_weapon):
     var.choicelist.remove(choice2)
     choice3 = random.choice(var.choicelist)
     var.choicelist.remove(choice3)
+    
 
     var.choicelist.append(choice1)
     var.choicelist.append(choice2)
     var.choicelist.append(choice3)
+    var.choicelist.sort()
 
     if choice1 == ' a house':
         choice1 = player_weapon + choice1
@@ -92,23 +101,49 @@ def battle(player_weapon):
     while True:
         player_choice = input('Choose an option: ')
         if player_choice.lower() == choice1.lower() or player_choice.lower() == choice2.lower() or player_choice.lower() == choice3.lower():
-            player_choice.capitalize()
+            player_choice = player_choice.capitalize()
             break
         else:
             print('That is not an option!')
             time.sleep(0.5)
-
+    
     battle_result(player_choice)
 
 
 def battle_result(player_choice):
-    if player_choice == var.choicelist[0]:
-        result = choice(var.choiceraidlist, size=1,
-                        p=[0.4, 0.3, 0.18, 0.09, 0.03])
-        print(result)
-        if result == var.choiceraidlist[0]:
-            var.village_health -= (var.player_attack + 10)
-            var.choice1list[0].replace("__", var.player_attack+10)
-            print(var.choicelist[0])
+    print(player_choice)
+    print(var.choicelist[8])
+    if player_choice == var.choicelist[8]:
+        print('we are here')
+        selected_event = random.choices(var.choiceraidlist, weights=var.raidweights)
+        print(selected_event)
+        if selected_event == var.choiceraidlist[0]:
+            print('we are here 2')
+            var.village_health -= (var.player_attack + random.randrange(2,13))
+        result_creator(selected_event, )
+
+          
+        elif selected_event == var.choiceraidlist[1]:
+          var.village_health -= (var.player_attack + random.randrange(2,14))
+          var.choiceraidlist[1].replace("__", var.player_attack+random.randrange(2,13))
+          print(var.chocieraidlist[1])
+        else: print('Unlucky bro')
 
     battle(player_weapon)
+
+def result_creator(selected_event, xdmg, ydmg, xcoins, ycoins, xhlth, yhlth):
+
+  if '__' in selected_event:
+    random_attack = random.randrange( x, y )
+    attack = var.player_attack + random_attack
+    var.village_health -= attack
+    selected_event = selected_event.replace("__", attack)
+  if '+__' in selected_event:
+    random_coins = random.randrange( xcoins, ycoins )
+    selected_event.replace("+__", random_coins)
+    var.player_coins += random_coins
+  if '-__' in selected_event:
+    random_damage = random.randrange( xhlth, yhlth)
+    selected
+
+  
