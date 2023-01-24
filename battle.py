@@ -1,7 +1,7 @@
 import time
 import random
 import var
-
+import math
 
 def battle_start(tutorial):
 
@@ -9,11 +9,11 @@ def battle_start(tutorial):
 
     print('The battle has started! This village has ' +
           str(var.village_health) + ' health')
-    time.sleep(2.5)
+    #time.sleep(2.5)
 
     if tutorial == True:
         print('Now you will choose your weapon. Type the name of the weapon you would like to choose.')
-        time.sleep(3)
+        #time.sleep(3)
 
     weapon1 = random.choice(var.weaponlist)
     var.weaponlist.remove(weapon1)
@@ -27,11 +27,11 @@ def battle_start(tutorial):
     var.weaponlist.append(weapon3)
 
     print('\nChoose your weapon to begin')
-    time.sleep(1.5)
+    #time.sleep(1.5)
 
     print('\n  ' + weapon1 + '        ' +
           weapon2 + '        ' + weapon3 + '\n')
-    time.sleep(1.2)
+    #time.sleep(1.2)
 
     global player_weapon
 
@@ -59,24 +59,35 @@ def battle_start(tutorial):
     print(var.player_attack)
 
     if var.win == True:
-      time.sleep(2)
-      exit()
+        time.sleep(2)
+        exit()
     elif var.loose == True:
-      time.sleep(2)
-      exit()
+        time.sleep(2)
+        exit()
 
-    time.sleep(2)
+    #time.sleep(2)
     battle(player_weapon)
 
 
 def battle(player_weapon):
-    choice1 = random.choice(var.choicelist)
+
+    if var.village_health <= 0:
+        print('Congratulations, you have successfully destroyed the village! You gained a total of ' + str(var.raid_coins) + ' coins!')
+        var.player_coins += var.raid_coins
+        var.raid_coins = 0
+        return None
+    if var.player_health <= 0:
+        print('Oh no! You have been killed in the raid! You lost the coins you gained in the raid.')
+        var.raid_coins = 0
+        return None
+
+
+    choice1 = var.choicelist[8]
     var.choicelist.remove(choice1)
     choice2 = random.choice(var.choicelist)
     var.choicelist.remove(choice2)
     choice3 = random.choice(var.choicelist)
     var.choicelist.remove(choice3)
-    
 
     var.choicelist.append(choice1)
     var.choicelist.append(choice2)
@@ -106,44 +117,44 @@ def battle(player_weapon):
         else:
             print('That is not an option!')
             time.sleep(0.5)
-    
+
     battle_result(player_choice)
 
 
 def battle_result(player_choice):
-    print(player_choice)
-    print(var.choicelist[8])
     if player_choice == var.choicelist[8]:
-        print('we are here')
-        selected_event = random.choices(var.choiceraidlist, weights=var.raidweights)
-        print(selected_event)
-        if selected_event == var.choiceraidlist[0]:
-            print('we are here 2')
-            var.village_health -= (var.player_attack + random.randrange(2,13))
-        result_creator(selected_event, )
+        selected_event = random.choices(var.choiceraidlist, weights=var.raidweights, k=1)[0]
+        selected_event = selected_event["event"]
 
-          
-        elif selected_event == var.choiceraidlist[1]:
-          var.village_health -= (var.player_attack + random.randrange(2,14))
-          var.choiceraidlist[1].replace("__", var.player_attack+random.randrange(2,13))
-          print(var.chocieraidlist[1])
-        else: print('Unlucky bro')
-
+        if selected_event == var.choiceraidlist[0]['event']:
+            result_creator(selected_event, xdmg=var.choiceraidlist[0]["xdmg"], ydmg=var.choiceraidlist[0]["ydmg"])
+        elif selected_event == var.choiceraidlist[1]['event']:
+            result_creator(selected_event, xdmg=10, ydmg=20, xcoins=25, ycoins=50)
+        elif selected_event == var.choiceraidlist[2]['event']:
+            result_creator(selected_event, xcoins=40, ycoins=69)
+        elif selected_event == var.choiceraidlist[3]['event']:
+            result_creator(selected_event, xhlth=10, yhlth=20)
+        else:
+            print('Unlucky bro')
     battle(player_weapon)
 
-def result_creator(selected_event, xdmg, ydmg, xcoins, ycoins, xhlth, yhlth):
 
-  if '__' in selected_event:
-    random_attack = random.randrange( x, y )
-    attack = var.player_attack + random_attack
-    var.village_health -= attack
-    selected_event = selected_event.replace("__", attack)
-  if '+__' in selected_event:
-    random_coins = random.randrange( xcoins, ycoins )
-    selected_event.replace("+__", random_coins)
-    var.player_coins += random_coins
-  if '-__' in selected_event:
-    random_damage = random.randrange( xhlth, yhlth)
-    selected
+def result_creator(selected_event, xdmg=None, ydmg=None, xcoins=None, ycoins=None, xhlth=None, yhlth=None):
 
-  
+    if '**' in selected_event:
+        random_attack = random.randrange(xdmg, ydmg)
+        attack = var.player_attack + random_attack
+        var.village_health -= attack
+        selected_event = selected_event.replace("**", str(attack))
+    if '++' in selected_event:
+        random_coins = random.randrange(xcoins, ycoins)
+        selected_event = selected_event.replace("++", str(random_coins))
+        var.raid_coins += random_coins
+    if '--' in selected_event:
+        random_damage = random.randrange(xhlth, yhlth)
+        selected_event = selected_event.replace("--", str(random_damage))
+        var.player_health = var.player_health - random_damage + math.ceil(var.player_defense * 75 / 100)
+
+    print(selected_event)
+    
+

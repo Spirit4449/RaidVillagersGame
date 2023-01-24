@@ -32,3 +32,4 @@ else:
   name = input('Player Name: ')
   battle_start(False)
   
+print('You are now ready to play the game!')
