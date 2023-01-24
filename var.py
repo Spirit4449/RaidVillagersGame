@@ -2,6 +2,8 @@ player_health = 100
 player_defense = 5
 player_attack = 5
 
+player_coins = 0
+
 village_health = None
 
 win = False
@@ -12,29 +14,31 @@ weaponlist = ['katana', 'ak47', 'sword', 'knife', 'grenade', 'stick', 'baseball 
               'bow and arrow', 'spear', 'electric rifle', 'pistol', 'water gun', 'shuriken', 'nunchucks', 'paper airplane', 'machine gun']
 
 choicelist = [
-    'Raid a house',
-    'Set a house on fire',
-    ' a house',
-    'Break into mansion',
-    'Swim in the pool',
-    'Raid the treasury',
-    'Attack a fort',
-    'Sabotoge a mine',
-    'Sneak into town hall',
-    'Loot the marketplace',
-    'Raid a farm',
-    'Hide in the well',
-    'Infiltrate a library',
-    'Disable defenses'
+  ' a house',
+  'Attack a fort', 
+  'Break into mansion',
+  'Disable defenses',
+  'Hide in the well', 
+  'Infiltrate a library', 
+  'Loot the marketplace', 
+  'Raid a farm',
+  'Raid a house', 
+  'Raid the treasury',
+  'Sabotoge a mine', 
+  'Set a house on fire', 
+  'Sneak into town hall',
+  'Swim in the pool'
 ]
 
 choiceraidlist = [
-    "You succesfully raided the house and dealt __ damage to the village",
-    "You destroyed the house dealing __ damage and gained +__ coins",
-    "You found +__ coins in the raid",
-    "You got shot by the home owner and took -__ damage",
-    "The home owner chased you and you tried to jump out of the window and took -__ damage"
+    {"event": "You succesfully raided the house and dealt __ damage to the village.", "weight": 0.8},
+    {"event": "You destroyed the house dealing __ damage and gained +__ coins", "weight": 0.05},
+    {"event": "You found +__ coins in the raid", "weight": 0.05},
+    {"event": "You got shot by the home owner and took -__ damage", "weight": 0.05},
+    {"event": "The home owner chased you and you tried to jump out of the window and took -__ damage.", "weight": 0.05}
 ]
+
+raidweights = [event["weight"] for event in choiceraidlist]
 
 choicefirelist = [
     "You set a house on fire and cause __ damage. You gained +__ coins.",
@@ -93,4 +97,36 @@ choiceransomlist = [
 choicesneaklist = [
     "You manage to sneak into the town hall and steal valuable treasures. You caused -__ damage and gained +__ coins."
     "The town hall's guards put up a fight, but you were able to steal +__ coins and deal __ damage."
+]
+
+choicetreasurylist = [
+  "The raid on the treasury was a complete success! You caused __ damage and gained +__ coins"
+  "The guards put up a fight but you were able to steal +__ coins and cause __ damage."
+  "You successfully raided the treasury and gained a stash of coins. You caused __ damage and gained +__ coins."
+  "The treasury was empty, causing 0 damage and gaining no coins"
+  "You could pick the lock to the treasury and gained no coins. You also took -__ damage."
+  "The guards swarmed you while you were in the treasury and you took -__ damage. You caused __ damage but gained no coins."
+]
+
+choicefortlist = [
+  "You successfully attacked the fort and caused __ damage. You gained +__ coins and gained an advantage in this battle"
+  "You completely overrun the fort and caused __ damage. You also managed to gain a total of +__ coins!"
+  "The fort's defenses were strong, but you were dable to cause __ damage and gain +__ coins."
+  "The fort's defenses were too strong and you were only able to cause __ damage. You gained no coins."
+  "The fort's defenders fought back fiercly causing you to take -__ damage and you gained no coins."
+]
+
+choiceransomlist = [
+  "You successfullly ransomed the hostages and gained a large sum of +__ coins. You also dealt __ damage to the village."
+  "The villagers paid a hefty ransom for the safe return of their loved ones. YOu gained a lot of coins from the negotiation. + +__ coins."
+  "The hostages were important figures in the village and their release came at a high price. You gained a significant amount of coins from the ransom."
+  "You capture some of the villagers and demand a ransom for their release. You gain +__ coins but loose some defense."
+  "The hostages were not wealthy and the village refused to pay for the ransom. You gained no coins from the negotiation."
+  "The hostages organized a counter-attack and made you take -__ damage. You gained no coins."
+  "The hostages turned out to be special trained forces of the army and manage to take you hostage instead. You paid +__ coins for your release and took -__ damage."
+]
+
+choicesneaklist = [
+  "You manage to sneak into the town hall and steal valuable treasures. You caused -__ damage and gained +__ coins."
+  "The town hall's guards put up a fight, but you were able to steal +__ coins and deal __ damage."
 ]
