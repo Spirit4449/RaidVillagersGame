@@ -3,7 +3,7 @@ import random
 import var
 import math
 
-def battle_start(tutorial):
+def battle_start(tutorial=None):
 
     var.village_health = random.randrange(70, 130)
 
