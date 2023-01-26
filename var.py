@@ -1,11 +1,15 @@
+state = ''
+
 player_health = 100
 player_defense = 5
 player_attack = 5
-
 player_coins = 0
+
 raid_coins = 0
 
 village_health = None
+
+lifesaver = False
 
 win = False
 loose = False

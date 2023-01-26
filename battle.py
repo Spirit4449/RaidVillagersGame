@@ -2,13 +2,15 @@ import time
 import random
 import var
 import math
+from colorama import Fore, Back, Style, init
+init(autoreset=True)
 
 def battle_start(tutorial=None):
 
     var.village_health = random.randrange(70, 130)
 
     print('The battle has started! This village has ' +
-          str(var.village_health) + ' health')
+          Fore.YELLOW + Style.BRIGHT + str(var.village_health) + Style.RESET_ALL + ' health')
     #time.sleep(2.5)
 
     if tutorial == True:
@@ -35,18 +37,19 @@ def battle_start(tutorial=None):
 
     global player_weapon
 
-    player_weapon = input('Your weapon: ')
+    player_weapon = input('Your weapon: ' + Fore.CYAN)
     while player_weapon.lower() not in var.weaponlist:
 
-        print('That is not an option')
+        print(Style.RESET_ALL + 'That is not an option')
         time.sleep(0.5)
-        player_weapon = input('Your weapon: ')
+        player_weapon = input('Your weapon: ' + Fore.CYAN)
+    print(Style.RESET_ALL)
 
     if player_weapon == 'nuclear bomb':
         print('You choose such an overpowered weapon that you automatically won the game!')
         var.win = True
     elif player_weapon == 'machine gun':
-        print('Good choice. Your weapon gave you +10 attack bonous')
+        print('Good choice. Your weapon gave you ' + Fore.GREEN + '+10' + Style.RESET_ALL + ' attack bonous')
         var.player_attack += 10
     elif player_weapon == 'water gun':
         print('Your weapon wasn\'t enough to take down a village. You automatically lost.')
@@ -54,9 +57,9 @@ def battle_start(tutorial=None):
     elif player_weapon == 'stick':
         print('Bro what were you thinking. Your stick broke during battle. Now you have no weapon attack bonous.')
     else:
-        print('Good Choice. Your weapon gave you +5 attack bonous.')
+        print('Good choice. Your weapon gave you ' + Fore.GREEN + '+5' + Style.RESET_ALL + ' attack bonous')
         var.player_attack += 5
-    print(var.player_attack)
+
 
     if var.win == True:
         time.sleep(2)
@@ -72,16 +75,19 @@ def battle_start(tutorial=None):
 def battle(player_weapon):
 
     if var.village_health <= 0:
-        print('Congratulations, you have successfully destroyed the village! You gained a total of ' + str(var.raid_coins) + ' coins!')
+        print(Fore.LIGHTGREEN_EX + 'Congratulations, you have successfully destroyed the village! You gained a total of ' + str(var.raid_coins) + ' coins!')
         var.player_coins += var.raid_coins
         var.raid_coins = 0
         return None
     if var.player_health <= 0:
-        print('Oh no! You have been killed in the raid! You lost the coins you gained in the raid.')
+        print(Fore.LIGHTMAGENTA_EX + 'Oh no! You have been killed in the raid! You lost the coins you gained in the raid.')
         var.raid_coins = 0
         return None
 
-
+    global choice1
+    global choice2
+    global choice3
+  
     choice1 = var.choicelist[8]
     var.choicelist.remove(choice1)
     choice2 = random.choice(var.choicelist)
@@ -94,11 +100,11 @@ def battle(player_weapon):
     var.choicelist.append(choice3)
     var.choicelist.sort()
 
-    if choice1 == ' a house':
+    if choice1 == var.choicelist[0]:
         choice1 = player_weapon + choice1
-    elif choice2 == ' a house':
+    elif choice2 == var.choicelist[0]:
         choice2 = player_weapon + choice2
-    elif choice3 == ' a house':
+    elif choice3 == var.choicelist[0]:
         choice3 = player_weapon + choice2
 
     # if tutorial == True:
@@ -110,14 +116,21 @@ def battle(player_weapon):
     time.sleep(1)
 
     while True:
-        player_choice = input('Choose an option: ')
-        if player_choice.lower() == choice1.lower() or player_choice.lower() == choice2.lower() or player_choice.lower() == choice3.lower():
+        player_choice = input('Choose an option: ' + Fore.CYAN)
+        if player_choice.lower() == choice1.lower() or player_choice.lower() == choice2.lower() or player_choice.lower() == choice3.lower() or player_choice == 'a' or player_choice == 'b' or player_choice == 'c' or player_choice == 'a)' or player_choice == 'b)' or player_choice == 'c)':
+            if player_choice == 'a' or player_choice == 'a)':
+                player_choice = choice1
+            if player_choice == 'b' or player_choice == 'b)':
+                 player_choice = choice2
+            if player_choice == 'c' or player_choice == 'c)':
+                 player_choice = choice3
             player_choice = player_choice.capitalize()
             break
         else:
+            Style.RESET_ALL
             print('That is not an option!')
             time.sleep(0.5)
-
+    print(Style.RESET_ALL)
     battle_result(player_choice)
 
 
@@ -135,7 +148,9 @@ def battle_result(player_choice):
         elif selected_event == var.choiceraidlist[3]['event']:
             result_creator(selected_event, xhlth=10, yhlth=20)
         else:
-            print('Unlucky bro')
+            print('An error occurred :(')
+      
+    time.sleep(1.5)
     battle(player_weapon)
 
 
@@ -157,4 +172,3 @@ def result_creator(selected_event, xdmg=None, ydmg=None, xcoins=None, ycoins=Non
 
     print(selected_event)
     
-
