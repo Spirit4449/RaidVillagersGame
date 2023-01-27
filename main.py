@@ -152,7 +152,7 @@ while True:
     if command == '/shop':
         valid_command = True
         print(f"""
-{Style.BRIGHT}SHOP          Your coins: {Fore.LIGHTYELLOW_EX}{var.player_coins}{Style.RESET_ALL}
+{Style.BRIGHT}SHOP        Your coins: {Fore.LIGHTYELLOW_EX}{var.player_coins}{Style.RESET_ALL}
 🍖 Meat - {Fore.GREEN}100 coins{Style.RESET_ALL}
      Restores health for 50 hitpoints on purchase.
 💝 Lifesaver - {Fore.GREEN}250 coins{Style.RESET_ALL}
@@ -160,13 +160,13 @@ while True:
 {Fore.BLACK}Type /buy [item] to purchase""")
     if command == '/buy meat':
         valid_command = True
-        hlthlevel = int((var.player_health - 100) / 10)
-        if hlthlevel == 0 or var.player_health != 100 + (hlthlevel)*10:
+        hlthlevel = int((var.max_health - 100) / 10)
+        if var.player_health != 100 + (hlthlevel*10):
             if var.player_coins - 100 >= 0:
                 var.player_coins -= 100
                 var.player_health += 50
-                if var.player_health >= 100:
-                    var.player_health = 100
+                if var.player_health >= 100 + (hlthlevel*10):
+                    var.player_health = var.max_health
                 print('You just bought a meat for 100 coins! Your health is now '+str(var.player_health))
             else:
                 print(Fore.RED + "You don't have enough coins to buy that!")
@@ -189,21 +189,22 @@ while True:
         valid_command = True
         atklevel = int(var.player_attack / 5)
         deflevel = int(var.player_defense / 5)
-        hlthlevel = int((var.player_health - 100) / 10)
+        hlthlevel = int((var.max_health - 100) / 10)
 
         atkcoins = 50 + (50*atklevel)
         defcoins = 50 + (50*deflevel)
         hlthcoins = 50 + (50*hlthlevel)
 
         print(f"""
-{Style.BRIGHT}UPGRADES         Your coins: {Fore.YELLOW}{var.player_coins}{Style.RESET_ALL}
+{Style.BRIGHT}UPGRADES        Your coins: {Fore.YELLOW}{var.player_coins}{Style.RESET_ALL}
 🗡️  Attack (Lvl {atklevel}) - {Fore.GREEN}{atkcoins} coins{Fore.RESET}
-     Increases attack by 5   (Max - lvl 10)
+     Increases attack by 5     (Max - lvl 10)
 🛡️  Defense (Lvl {deflevel}) - {Fore.GREEN}{defcoins} coins{Fore.RESET}
-     Increases defense by 5   (Max - lvl 10)
+     Increases defense by 5     (Max - lvl 10)
 ❤️  Health (Lvl {hlthlevel}) - {Fore.GREEN}{hlthcoins} coins{Fore.RESET}
      Increases max health by 10   (Max - lvl 10)
-{Fore.BLACK}Type /upgrade [stat] to upgrade""")
+{Fore.BLACK}Type /upgrade [stat] to upgrade
+""")
 
     if command == '/upgrade attack':
         valid_command = True
@@ -234,13 +235,14 @@ while True:
         else:
             print("Your attack is already at the max level!")
     if command == '/upgrade health':
-        hlthlevel = int((var.player_health - 100) / 10)
+        hlthlevel = int((var.max_health - 100) / 10)
         hlthcoins = 50 + (50*hlthlevel)
         valid_command = True
         if hlthlevel < 10:
             if var.player_coins - hlthcoins >=0:
                 var.player_coins -= hlthcoins
-                var.player_health += 10
+                var.max_health += 10
+                var.player_health = var.max_health
                 hlthlevel += 1
                 print('You successfully upgraded your health to level '+str(hlthlevel)+' for '+str(hlthcoins)+' coins')
             else:
@@ -257,11 +259,15 @@ while True:
         exit()
     elif command == '/stats':
         valid_command = True
+        atklevel = int(var.player_attack / 5)
+        deflevel = int(var.player_defense / 5)
+        hlthlevel = int((var.max_health - 100) / 10)
         print(f"""
 Stats for {var.name}:
-🗡️ Attack: {str(var.player_attack)}
-🛡️ Defense: {str(var.player_defense)}
-❤️ Health: {str(var.player_health)}""")
+🗡️  Attack: {str(var.player_attack)}  (Level {atklevel})
+🛡️  Defense: {str(var.player_defense)} (Level {deflevel})
+❤️  Health: {str(var.player_health)} (Level {hlthlevel})
+""")
         if var.lifesaver == True:
             print(Style.DIM + 'Lifesaver active')
     elif command == '/coins':
@@ -288,7 +294,7 @@ Stats for {var.name}:
                 print('That is not a number!')
             splitlist = command.split(" ")
             var.player_health = int(splitlist[1])
-            print('Your health is now'+str(var.player_health))
+            print('Your health is now '+str(var.player_health))
         else:
             print('Nice try but only admins can do that')
 

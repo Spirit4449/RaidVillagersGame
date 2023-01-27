@@ -9,6 +9,8 @@ player_defense = 4
 player_attack = 4
 player_coins = 0
 
+max_health = 100
+
 raid_coins = 0
 
 village_health = None

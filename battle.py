@@ -280,6 +280,6 @@ def result_creator(selected_event, xdmg=None, ydmg=None, xcoins=None, ycoins=Non
         random_damage = random.randrange(xhlth, yhlth)
         selected_event=selected_event.replace(
             "--", Fore.RED + str(random_damage)+Fore.RESET)
-        var.player_health = int((var.player_health - random_damage + math.floor(var.player_health * 30 / 100)) + var.player_defense)
+        var.player_health = int((var.player_health - random_damage + math.floor(var.player_health * 30 / 100)) + (var.player_defense * 90 / 100))
 
     print(selected_event)
