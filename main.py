@@ -30,7 +30,7 @@ def read_Data(file_Name):
 
 
 def add_Data(data, file_Name='database.csv'):
-  fields = ['Name', 'Attack', 'Defense', 'Health', 'Coins']
+  #fields = ['Name', 'Attack', 'Defense', 'Health', 'Coins']
   rows = []
   for value in data:
     rows.append(value)
@@ -104,10 +104,10 @@ retrievedata()
 
 # Tutorial
 if var.tutorial == True:
-    print(f"Welcome to Raid Villagers {var.name}! Raid villagers is a trhilling text-based adventure game where you play as a ruthless raider, attacking and looting villages for gold and treasure. Your ultimate goal is to become the most powerful raider in the land by upgrading your character's stats. You will have to make strategic choices, outsmart the village defenders, and overcome dangerous obstacles to succeed. You will gain gold throughout your journey. Spend it wisely on your character stats. Now are you ready to embark on this epic adventure?  Let's begin!\n")
+    print(f"Welcome to Raid Villagers {var.name}! Raid Villagers is an adventure game where you play as a raider attacking villages for gold and treasure. Your goal is to become the most powerful raider by upgrading your character's stats. Are you ready to embark on this epic adventure?\n")
     time.sleep(5)
   
-    print('Let\'s start by attacking your first village.')
+    print('Let\'s start by attacking your first village.\n')
     time.sleep(2)
 
     battle_start()
@@ -125,8 +125,8 @@ else:
         print("Ok. If you need a list of commands type " + Fore.CYAN + "/help\n")
     else:
         print(
-            "That is not a valid option! I guess you don't want a tutorial. If you ever need a list of commands, just type /help"
-        )
+            "That is not a valid option! I guess you don't want a tutorial. If you ever need a list of commands, just type" + Fore.YELLOW + "/help")
+
 
 if var.tutorial == True:
     print(f'You are now ready to play the game! Type {Fore.YELLOW}/help{Fore.RESET} to view the list of commands...')
@@ -140,21 +140,21 @@ while True:
     print(Style.RESET_ALL, end="")
     if command == '/help':
         valid_command = True
-        print('''
-  /help - displays the help command
-  /battle - starts a battle
-  /upgrades - displays a list of upgrades to your character
-  /stats - displays your current stats
-  /shop - brings a menu with items you can buy
-  /coins - displays current amount of coins
-  /exit - exits the game (progress does not save)
+        print(f'''
+  {Fore.GREEN}/help - displays the help command
+  {Fore.BLUE}/battle - starts a battle
+  {Fore.LIGHTGREEN_EX}/upgrades - displays a list of upgrades to your character
+  {Fore.MAGENTA}/stats - displays your current stats
+  {Fore.LIGHTCYAN_EX}/shop - brings a menu with items you can buy
+  {Fore.YELLOW}/coins - displays current amount of coins
+  {Fore.RED}/exit - exits the game (progress is saved)
 ''')
     if command == '/shop':
         valid_command = True
         print(f"""
 {Style.BRIGHT}SHOP        Your coins: {Fore.LIGHTYELLOW_EX}{var.player_coins}{Style.RESET_ALL}
 🍖 Meat - {Fore.GREEN}100 coins{Style.RESET_ALL}
-     Restores health for 50 hitpoints on purchase.
+     Restores health for 25 hitpoints%
 💝 Lifesaver - {Fore.GREEN}250 coins{Style.RESET_ALL}
      Gives another change if you are about to die. (Can only buy one at a time)
 {Fore.BLACK}Type /buy [item] to purchase""")
@@ -164,7 +164,7 @@ while True:
         if var.player_health != 100 + (hlthlevel*10):
             if var.player_coins - 100 >= 0:
                 var.player_coins -= 100
-                var.player_health += 50
+                var.player_health += 25
                 if var.player_health >= 100 + (hlthlevel*10):
                     var.player_health = var.max_health
                 print('You just bought a meat for 100 coins! Your health is now '+str(var.player_health))
@@ -187,8 +187,8 @@ while True:
             
     elif command == '/upgrades':
         valid_command = True
-        atklevel = int(var.player_attack / 5)
-        deflevel = int(var.player_defense / 5)
+        atklevel = int((var.player_attack - 5) / 5)
+        deflevel = int((var.player_defense - 5) / 5)
         hlthlevel = int((var.max_health - 100) / 10)
 
         atkcoins = 50 + (50*atklevel)
@@ -208,7 +208,7 @@ while True:
 
     if command == '/upgrade attack':
         valid_command = True
-        atklevel = int(var.player_attack / 5)
+        atklevel = int((var.player_attack - 5) / 5)
         atkcoins = 50 + (50*atklevel)
         if atklevel < 10:
             if var.player_coins - atkcoins >=0:
@@ -222,7 +222,7 @@ while True:
             print("Your attack is already at the max level!")
     if command == '/upgrade defense':
         valid_command = True
-        deflevel = int(var.player_defense / 5)
+        deflevel = int((var.player_defense - 5) / 5)
         defcoins = 50 + (50*deflevel)
         if deflevel < 10:
             if var.player_coins - defcoins >=0:
@@ -259,14 +259,14 @@ while True:
         exit()
     elif command == '/stats':
         valid_command = True
-        atklevel = int(var.player_attack / 5)
-        deflevel = int(var.player_defense / 5)
+        atklevel = int((var.player_attack - 5) / 5)
+        deflevel = int((var.player_defense - 5) / 5)
         hlthlevel = int((var.max_health - 100) / 10)
         print(f"""
 Stats for {var.name}:
-🗡️  Attack: {str(var.player_attack)}  (Level {atklevel})
-🛡️  Defense: {str(var.player_defense)} (Level {deflevel})
-❤️  Health: {str(var.player_health)} (Level {hlthlevel})
+🗡️  Attack: {Fore.MAGENTA}{str(var.player_attack)}{Fore.RESET}  (Level {atklevel})
+🛡️  Defense: {Fore.GREEN}{str(var.player_defense)}{Fore.RESET} (Level {deflevel})
+❤️  Health: {Fore.LIGHTRED_EX}{str(var.player_health)}{Fore.RESET} (Level {hlthlevel})
 """)
         if var.lifesaver == True:
             print(Style.DIM + 'Lifesaver active')
@@ -303,7 +303,7 @@ Stats for {var.name}:
         if var.name == 'nischay':
             var.player_attack = 5
             var.player_defense = 5
-            var.player_coins = 0
+            var.player_coins = 10000
             var.player_health = 100
             print(Fore.YELLOW + 'Reset all your data')
         else:
