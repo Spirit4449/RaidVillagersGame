@@ -154,7 +154,7 @@ while True:
         print(f"""
 {Style.BRIGHT}SHOP        Your coins: {Fore.LIGHTYELLOW_EX}{var.player_coins}{Style.RESET_ALL}
 🍖 Meat - {Fore.GREEN}100 coins{Style.RESET_ALL}
-     Restores health for 25 hitpoints%
+     Restores health for 25 hitpoints
 💝 Lifesaver - {Fore.GREEN}250 coins{Style.RESET_ALL}
      Gives another change if you are about to die. (Can only buy one at a time)
 {Fore.BLACK}Type /buy [item] to purchase""")

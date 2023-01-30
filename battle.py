@@ -125,13 +125,13 @@ c) {weapon3}
 def battle(player_weapon):
     if var.village_health <= 0:
         for event in var.special_event:
-            if var.player_defense in event:
+            if 'var.player_defense' in event:
                 event = event.split("=")
                 if '-' in event[0]:
                     var.player_defense += int(event[1])
                 elif '+' in event[0]:
                     var.player_defense -= int(event[1])
-            if var.player_attack in event:
+            if 'var.player_attack' in event:
                 event = event.split("=")
                 if '-' in event[0]:
                     var.player_attack += int(event[1])
@@ -172,11 +172,11 @@ def battle(player_weapon):
     global choice3
 
     choice1 = random.choice(var.choicelist)
-    var.choicelist.remove(choice1)
+    #var.choicelist.remove(choice1)
     choice2 = random.choice(var.choicelist)
-    var.choicelist.remove(choice2)
+    #var.choicelist.remove(choice2)
     choice3 = random.choice(var.choicelist)
-    var.choicelist.remove(choice3)
+    #var.choicelist.remove(choice3)
 
     if choice1 == ' a house':
         print('I am here')
@@ -189,10 +189,10 @@ def battle(player_weapon):
         choice3 = player_weapon + '' + choice3
 
 
-    var.choicelist.append(choice1)
-    var.choicelist.append(choice2)
-    var.choicelist.append(choice3)
-    var.choicelist.sort()
+    # var.choicelist.append(choice1)
+    # var.choicelist.append(choice2)
+    # var.choicelist.append(choice3)
+    # var.choicelist.sort()
 
 
     print('\nChoose an option from the following:\n' + 'a) ' +
