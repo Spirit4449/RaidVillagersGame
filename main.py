@@ -14,21 +14,6 @@ init(autoreset=True)
 
 
 
-def read_Data(file_Name):
-
-  data_List = []
-  
-  #Opens the file and stores it as a variable file
-  with open(file_Name, mode='r') as file:
-    #Read file
-    csvFile = csv.reader(file)
-  
-    #Show contents of file
-    for lines in csvFile:
-      data_List.append(lines)
-  return data_List
-
-
 def add_Data(data, file_Name='database.csv'):
   #fields = ['Name', 'Attack', 'Defense', 'Health', 'Coins']
   rows = []
@@ -46,28 +31,6 @@ def add_Data(data, file_Name='database.csv'):
     #writeMyData (Puts on different rows)
     csvfile.writerow(rows)
 
-
-def save_data(player_name, player_attack, player_defense, player_health, player_coins):
-    # Read data from csv file into a list
-    data_list = read_Data('database.csv')
-    
-    # Iterate through the list and update values for the specified player
-    for i in range(len(data_list)):
-        if data_list[i][0] == player_name:
-            data_list[i][1] = player_attack
-            data_list[i][2] = player_defense
-            data_list[i][3] = player_health
-            data_list[i][4] = player_coins
-            
-    # Write the updated data back to the csv file
-    with open('database.csv', 'w', newline='') as file:
-        csv_writer = csv.writer(file)
-        csv_writer.writerows(data_list)
-
-
-
-
-
 def print_slow(text, speed=0.01):
     for character in text:
         sys.stdout.write(character)
@@ -76,7 +39,7 @@ def print_slow(text, speed=0.01):
 
 
 file = 'database.csv'
-var.generated_Data = read_Data(file)
+var.generated_Data = var.read_Data(file)
 
 print_slow('Player Name: ')
 var.name = input(Fore.CYAN).lower()
@@ -314,7 +277,7 @@ Stats for {var.name}:
         print(Fore.RED + "That is not a valid command. Type /help for a list of commands")
 
     valid_command = False
-    save_data(var.name, var.player_attack, var.player_defense, var.player_health, var.player_coins)
+    var.save_data(var.name, var.player_attack, var.player_defense, var.player_health, var.player_coins)
 
 
 

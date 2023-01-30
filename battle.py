@@ -85,7 +85,6 @@ c) {weapon3}
     player_weapon = input(Fore.CYAN).lower()
     while player_weapon != 'a' and player_weapon != 'b' and player_weapon != 'c':
 
-        print(player_weapon)
         print(Fore.RED + 'That is not an option')
         time.sleep(0.5)
         player_weapon = input('Your weapon: ' + Fore.CYAN)
@@ -94,25 +93,26 @@ c) {weapon3}
     if player_weapon == 'a':
         player_weapon = weapon1
     if player_weapon == 'b':
-        player_weapon == weapon2
+        player_weapon = weapon2
     if player_weapon == 'c':
-        player_weapon == weapon3
+        player_weapon = weapon3
 
     if player_weapon == 'nuclear bomb':
         print('You choose such an overpowered weapon that you automatically won the game!')
+        var.raid_coins += 200
         var.village_health = 0
     elif player_weapon == 'machine gun':
         print('Good choice. Your weapon gave you ' + Fore.GREEN +
-              '+10' + Style.RESET_ALL + ' attack bonous')
+              '+10' + Style.RESET_ALL + ' attack bonus')
         var.player_attack += 10
     elif player_weapon == 'water gun':
         print('Why did you choose such a terrible weapon. You have no weapon attack bonus.')
 
     elif player_weapon == 'stick':
-        print('Bro what were you thinking. Your stick broke during battle. Now you have no weapon attack bonous.')
+        print('Bro what were you thinking. Your stick broke during battle. Now you have no weapon attack bonus.')
     else:
         print('Good choice. Your weapon gave you ' + Fore.GREEN +
-              '+5' + Style.RESET_ALL + ' attack bonous')
+              '+5' + Style.RESET_ALL + ' attack bonus')
         var.player_attack += 5
 
     time.sleep(2)
@@ -124,6 +124,7 @@ c) {weapon3}
 
 def battle(player_weapon):
     if var.village_health <= 0:
+        print(var.special_event)
         for event in var.special_event:
             if 'var.player_defense' in event:
                 event = event.split("=")
@@ -158,9 +159,9 @@ def battle(player_weapon):
             return
         else:
             print(Fore.RED +
-                  'Oh no! You have been killed in the raid! The battle has ended. You lost all your coins.')
+                  'Oh no! You have been killed in the raid! The battle has ended. You lost 20% your coins.')
             var.raid_coins = 0
-            var.player_coins = 0
+            var.player_coins = int(var.player_coins - (var.player_coins * 20 / 100))
 
             if var.player_health <= 0:
                 var.player_health = var.max_health
@@ -172,27 +173,22 @@ def battle(player_weapon):
     global choice3
 
     choice1 = random.choice(var.choicelist)
-    #var.choicelist.remove(choice1)
+    var.choicelist.remove(choice1)
     choice2 = random.choice(var.choicelist)
-    #var.choicelist.remove(choice2)
+    var.choicelist.remove(choice2)
     choice3 = random.choice(var.choicelist)
-    #var.choicelist.remove(choice3)
+    var.choicelist.remove(choice3)
 
     if choice1 == ' a house':
-        print('I am here')
         choice1 = player_weapon + '' + choice1
     elif choice2 == ' a house':
-        print('I am here')
         choice2 = player_weapon + '' + choice2
     elif choice3 == ' a house':
-        print('I am here')
         choice3 = player_weapon + '' + choice3
 
-
-    # var.choicelist.append(choice1)
-    # var.choicelist.append(choice2)
-    # var.choicelist.append(choice3)
-    # var.choicelist.sort()
+    
+    var.choicelist.clear()
+    var.choicelist.extend(var.choicecopylist)
 
 
     print('\nChoose an option from the following:\n' + 'a) ' +
@@ -200,10 +196,11 @@ def battle(player_weapon):
     time.sleep(.2)
 
     while True:
+        var.save_data(var.name, var.player_attack, var.player_defense, var.player_health, var.player_coins)
         print_slow('Your choice: ')
         player_choice = input(Fore.CYAN)
         print(Style.RESET_ALL, end="")
-        if player_choice.lower() == choice1.lower() or player_choice.lower() == choice2.lower() or player_choice.lower() == choice3.lower() or player_choice.lower() == 'a' or player_choice.lower() == 'b' or player_choice.lower() == 'c' or player_choice.lower() == 'a)' or player_choice.lower() == 'b)' or player_choice.lower() == 'c)' or player_choice.lower() == player_weapon + choice1 or player_choice.lower() == player_weapon + choice2 or player_choice.lower() == player_weapon + choice3:
+        if player_choice.lower() == choice1.lower() or player_choice.lower() == choice2.lower() or player_choice.lower() == choice3.lower() or player_choice.lower() == 'a' or player_choice.lower() == 'b' or player_choice.lower() == 'c' or player_choice.lower() == 'a)' or player_choice.lower() == 'b)' or player_choice.lower() == 'c)' or player_choice.lower() == player_weapon + ' a house' or player_choice.lower() == player_weapon + ' a house' or player_choice.lower() == player_weapon + ' a house':
             if player_choice == 'a' or player_choice == 'a)':
                 player_choice = choice1
             if player_choice == 'b' or player_choice == 'b)':
@@ -217,12 +214,12 @@ def battle(player_weapon):
             print('That is not an option!')
             time.sleep(0.5)
     print(Style.RESET_ALL, end="")
-    battle_result(player_choice)
+    battle_result(player_choice, player_weapon)
 
 
-def battle_result(player_choice):
+def battle_result(player_choice, player_weapon):
 
-    if player_choice == var.choicelist[0]:
+    if player_choice.lower() == player_weapon + ' a house':
         selected_event = random.choices(
             var.choicehouselist, weights=var.houseweights, k=1)[0]
         selected_event = selected_event["event"]
@@ -265,7 +262,7 @@ def battle_result(player_choice):
             result_creator(
                 selected_event, xcoins=var.choicemansionlist[3]["xcoins"], ycoins=var.choicemansionlist[3]["ycoins"])
             var.player_defense += 5
-            var.special_event.append('var.player_defense += 5')
+            var.special_event.append('var.player_defense +=5')
         elif selected_event == var.choicemansionlist[4]['event']:
             result_creator(
                 selected_event, xdmg=var.choicemansionlist[4]["xdmg"], ydmg=var.choicemansionlist[4]["ydmg"])
@@ -286,7 +283,7 @@ def battle_result(player_choice):
             result_creator(
                 selected_event, xcoins=var.choicedisablelist[1]["xcoins"], ycoins=var.choicedisablelist[1]["ycoins"])
             var.player_attack *= 1.3
-            var.special_event.append('var.player_attack *= 2')
+            var.special_event.append('var.player_attack *=2')
             var.extra_damage == True
         elif selected_event == var.choicedisablelist[2]['event']:
             result_creator(
@@ -294,12 +291,12 @@ def battle_result(player_choice):
         elif selected_event == var.choicedisablelist[3]['event']:
             result_creator(selected_event, xcoins=var.choicedisablelist[3]["xcoins"], ycoins=var.choicedisablelist[3]["ycoins"])
             var.player_attack *= 1.1
-            var.special_event.append('var.player_attack *= 1.5')
+            var.special_event.append('var.player_attack *=1.5')
             var.extra_damage == True
         elif selected_event == var.choicedisablelist[4]['event']:
             result_creator(
                 selected_event, xcoins=var.choicedisablelist[4]["xcoins"], ycoins=var.choicedisablelist[4]["ycoins"])
-            var.special_event.append('var.player_atack += 5')
+            var.special_event.append('var.player_atack +=5')
         elif selected_event == var.choicedisablelist[5]['event']:
             result_creator(selected_event, xcoins=var.choicedisablelist[5]["xcoins"], yhlth=var.choicedisablelist[5]["ycoins"])
         elif selected_event == var.choicedisablelist[6]['event']:
@@ -343,7 +340,7 @@ def battle_result(player_choice):
         selected_event = selected_event["event"]
         if selected_event == var.choicelibrarylist[0]['event']:
             result_creator(selected_event)
-            var.special_event.append('var.player_attack += 10')
+            var.special_event.append('var.player_attack +=10')
         elif selected_event == var.choicelibrarylist[1]['event']:
             result_creator(selected_event, xcoins=var.choicelibrarylist[1]["xcoins"], ycoins=var.choicelibrarylist[1]["ycoins"])
         elif selected_event == var.choicelibrarylist[2]['event']:
@@ -374,8 +371,8 @@ def battle_result(player_choice):
             result_creator(
             selected_event, xhlth=var.choicemarketlist[3]["xhlth"], yhlth=var.choicemarketlist[3]["yhlth"])
         elif selected_event == var.choicemarketlist[4]['event']:
-            result_creator(selected_event, xdmg=var.choicemarketlist[4]["xdmg"], ydmg=var.choicemarketlist[4]
-            ["ydmg"])
+            result_creator(selected_event, xhlth=var.choicemarketlist[4]["hlth"], yhlth=var.choicemarketlist[4]
+            ["yhlth"])
         elif selected_event == var.choicemarketlist[5]['event']:
             result_creator(selected_event)
 
@@ -467,7 +464,7 @@ def battle_result(player_choice):
             result_creator(
                 selected_event, xcoins=var.choiceransomlist[3]["xcoins"], ycoins=var.choiceransomlist[3]["ycoins"])
             var.player_defense -= 3
-            var.special_event.append('var.player_defense -= 3')
+            var.special_event.append('var.player_defense -=3')
         elif selected_event == var.choiceransomlist[4]['event']:
             result_creator(selected_event)
         elif selected_event == var.choiceransomlist[5]['event']:
@@ -476,7 +473,10 @@ def battle_result(player_choice):
         elif selected_event == var.choiceransomlist[6]['event']:
             result_creator(
                 selected_event, xhlth=var.choiceransomlist[6]["xhlth"], yhlth=var.choiceransomlist[6]["yhlth"])
-            var.player_coins -= random.randrange(50, 100)
+            coinloss = random.randrange(50, 100)
+            if '@@' in selected_event:
+              selected_event = selected_event.replace('@@', coinloss)
+              var.player_coins = int(var.player_coins - coinloss)
 
     if player_choice == var.choicelist[11]:
         selected_event = random.choices(
@@ -584,28 +584,31 @@ def battle_result(player_choice):
     battle(player_weapon)
 
 
-def result_creator(selected_event, xdmg=None, ydmg=None, xcoins=None, ycoins=None, xhlth=None, yhlth=None):
+try: 
+  def result_creator(selected_event, xdmg=None, ydmg=None, xcoins=None, ycoins=None, xhlth=None, yhlth=None):
+  
+      if '**' in selected_event:
+          random_attack = random.randrange(xdmg, ydmg)
+          attack = int((var.player_attack * 80 / 100) +
+                       (random_attack * 80 / 100))
+          var.village_health -= attack
+          selected_event = selected_event.replace(
+              "**", Fore.MAGENTA + str(attack) + Fore.RESET)
+      if '++' in selected_event:
+          random_coins = random.randrange(xcoins, ycoins)
+          selected_event = selected_event.replace(
+              "++", Fore.LIGHTYELLOW_EX + str(random_coins) + Fore.RESET)
+          var.raid_coins += random_coins
+      if '--' in selected_event:
+          random_damage = random.randrange(xhlth, yhlth)
+          health = int(random_damage)
+          health = int(health + ((var.player_health * 6 / 100) +
+                       (var.player_defense * 95 / 100)))
+  
+          selected_event = selected_event.replace(
+              "--", Fore.RED + str(health) + Fore.RESET)
+          var.player_health -= health
+  
+      print(selected_event)
 
-    if '**' in selected_event:
-        random_attack = random.randrange(xdmg, ydmg)
-        attack = int((var.player_attack * 80 / 100) +
-                     (random_attack * 80 / 100))
-        var.village_health -= attack
-        selected_event = selected_event.replace(
-            "**", Fore.MAGENTA + str(attack) + Fore.RESET)
-    if '++' in selected_event:
-        random_coins = random.randrange(xcoins, ycoins)
-        selected_event = selected_event.replace(
-            "++", Fore.LIGHTYELLOW_EX + str(random_coins) + Fore.RESET)
-        var.raid_coins += random_coins
-    if '--' in selected_event:
-        random_damage = random.randrange(xhlth, yhlth)
-        health = int(random_damage)
-        health = int(health + ((var.player_health * 6 / 100) +
-                     (var.player_defense * 95 / 100)))
-
-        selected_event = selected_event.replace(
-            "--", Fore.RED + str(health) + Fore.RESET)
-        var.player_health -= health
-
-    print(selected_event)
+except Exception as e: print('An error occuured' + e)
