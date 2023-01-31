@@ -22,11 +22,14 @@ special_event = []
 village_health = None
 
 lifesaver = False
+coindoubler = False
 
 generated_Data = []
 
-weaponlist = ['katana', 'ak47', 'sword', 'knife', 'grenade', 'stick', 'baseball bat', 'shotgun', 'nuclear bomb',
-              'bow and arrow', 'spear', 'electric rifle', 'pistol', 'water gun', 'shuriken', 'nunchucks', 'paper airplane', 'machine gun']
+
+admins = ['nischay', 'george', 'logan']
+
+weaponlist = ['katana', 'ak47', 'sword', 'knife', 'grenade', 'stick', 'baseball bat', 'shotgun', 'atomic bomb', 'bow and arrow', 'spear', 'electric rifle', 'pistol', 'water gun', 'shuriken', 'nunchucks', 'poison bottle', 'rocket launcher' 'machine gun', 'dynamite', 'bomb', 'dagger', 'revolver', 'targeted missiles', 'hand cannon', 'hamer', 'boomerang', 'javelin', 'plasma gun']
 
 choicelist = [
     ' a house',
