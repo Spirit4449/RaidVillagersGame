@@ -1,20 +1,16 @@
 # DISCLAIMER
 # OPEN CONSOLE FULL SCREEN FOR THE BEST EXPERIENCE
 
-import threading
 import var
 import time
-import atexit
-import math
 #import random
 import csv
 import sys
+import threading
+from datetime import date
 from battle import battle_start
 from colorama import Fore, Style, init
 init(autoreset=True)
-
-
-
 
 
 
@@ -49,52 +45,66 @@ print_slow('Player Name: ')
 var.name = input(Fore.CYAN).lower()
 print(Style.RESET_ALL, end='')
 
+global today
+today = date.today()
+var.loginDate = today.strftime("%d-%m-%y")
 
 def retrievedata():
   for list in var.generated_Data:
     for value in list:
       if value == var.name:
-        
         var.player_attack = int(list[1])
         var.player_defense = int(list[2])
         var.player_health = int(list[3])
         var.player_coins = int(list[4])
+        var.loginDate = list[5]
         var.tutorial = False
 
   if var.tutorial == True:
-    new_player = [var.name, var.player_attack, var.player_defense, var.player_health, var.player_coins]
+    new_player = [var.name, var.player_attack, var.player_defense, var.player_health, var.player_coins, var.loginDate]
     add_Data(new_player)
     var.tutorial = True
+
 
 
     
 retrievedata()
 
+loginlist = var.loginDate.split("-")
 # Tutorial
 if var.tutorial == True:
     print(f"Welcome to Raid Villagers {var.name}! Raid Villagers is an adventure game where you play as a raider attacking villages for gold and treasure. Your goal is to become the most powerful raider by upgrading your character's stats. Are you ready to embark on this epic adventure?\n")
     time.sleep(5)
+    print('Upgrade all of your players stats to level 10 to win the game!\n')
   
     print('Let\'s start by attacking your first village.\n')
     time.sleep(2)
 
     battle_start()
 
+elif int(today.strftime("%y")) - int(loginlist[2]) > 0 or int(today.strftime("%m")) - int(loginlist[1]) > 0 or int(today.strftime("%d")) - int(loginlist[0]) >= 2:
+     print('Welcome back ' + var.name)
+     time.sleep(.5)
+     print_slow('Would you like a quick tutorial? ', 0.01)
+     quicktutorial = input(Fore.CYAN)
+     print(Style.RESET_ALL, end="")
+     if quicktutorial.lower() == 'yes':
+         var.tutorial = True
+         print("Ok, here is a quick tutorial. Lets start by going into a battle.")
+         time.sleep(2)
+         battle_start(True)
+     if quicktutorial.lower() == 'no':
+         print("Ok. If you need a list of commands type " + Fore.CYAN + "/help\n")
+     else:
+         print(
+             "That is not a valid option! I guess you don't want a tutorial. If you ever need a list of commands, just type" + Fore.YELLOW + "/help")
 else:
-    print_slow('Would you like a quick tutorial? ', 0.01)
-    quicktutorial = input(Fore.CYAN)
-    print(Style.RESET_ALL, end="")
-    if quicktutorial.lower() == 'yes':
-        var.tutorial = True
-        print("Ok, here is a quick tutorial. Lets start by going into a battle.")
-        time.sleep(2)
-        battle_start(True)
-    if quicktutorial.lower() == 'no':
-        print("Ok. If you need a list of commands type " + Fore.CYAN + "/help\n")
-    else:
-        print(
-            "That is not a valid option! I guess you don't want a tutorial. If you ever need a list of commands, just type" + Fore.YELLOW + "/help")
+  print('Welcome back ' + var.name)
+  time.sleep(.4)
+  print('Type' + Fore.YELLOW + ' /help' + Fore.RESET + ' for a list of commands')
 
+var.loginDate = today.strftime("%d-%m-%y")
+var.save_data(var.name, var.player_attack, var.player_defense, var.player_coins, var.player_health, var.loginDate)
 
 if var.tutorial == True:
     print(f'You are now ready to play the game! Type {Fore.YELLOW}/help{Fore.RESET} to view the list of commands...')
@@ -132,7 +142,7 @@ while True:
         valid_command = True
         hlthlevel = int((var.max_health - 100) / 10)
         if var.player_health != 100 + (hlthlevel*10):
-            if var.player_coins - 50 >= 0:
+            if var.player_coins - 100 >= 0:
                 var.player_coins -= 50
                 var.player_health += 25
                 if var.player_health >= 100 + (hlthlevel*10):
@@ -153,7 +163,7 @@ while True:
             else:
                 print(Fore.RED + "You don't have enough coins to buy that!")    
         else:
-            print('A lifesaver is already active!')     
+            print('A lifesaver is already active!')  
 
     elif command == '/buy coin doubler' or command == '/buy coindoubler' or command == '/buy coin doubler' or command == '/buy doubler':
         def coin_doubler():
@@ -171,7 +181,6 @@ while True:
                 continue
             else:
                 print(Fore.YELLOW + 'Coin doubler has expired')
-                t1.daemon = False
                 t1.join()
                     
         valid_command = True
@@ -180,14 +189,13 @@ while True:
                 var.player_coins -= 400
                 var.coindoubler = True
                 print('You just bought a coin doubler for 400 coins! You have one minute to use it!')
-                t1 = threading.Thread(target=coin_doubler, daemon=True)
+                t1 = threading.Thread(target=coin_doubler)
                 t1.start()
             
             else:
                 print(Fore.RED + "You don't have enough coins to buy that!")    
         else:
             print('A coin doubler is already active!')
-            
             
     elif command == '/upgrades' or command == '/upgrade':
         valid_command = True
@@ -260,6 +268,11 @@ while True:
     elif command == '/exit':
         valid_command = True
         print(Fore.YELLOW + 'Thank you for playing. See you later!')
+        try:
+          t1.join()
+        except NameError:
+          pass
+          
         exit()
     elif command == '/stats':
         valid_command = True
@@ -273,9 +286,7 @@ Stats for {var.name}:
 ❤️  Health: {Fore.LIGHTRED_EX}{str(var.player_health)}{Fore.RESET} (Level {hlthlevel})
 """)
         if var.lifesaver == True:
-            print(Fore.LIGHTBLACK_EX + 'Lifesaver active')
-        if var.coindoubler == True:
-            print(Fore.LIGHTBLACK_EX + 'Coin doubler active')
+            print(Style.DIM + 'Lifesaver active')
     elif command == '/coins':
         valid_command = True
         print('You currently have ' + str(var.player_coins) + ' coins.')
@@ -283,37 +294,47 @@ Stats for {var.name}:
     elif '/givecoins' in command:
         valid_command = True
         if var.name in var.admins:
-            splitlist = command.split(" ")
-            try:
-                givecoins = int(splitlist[1])
-                var.player_coins += givecoins
-                print('Gave ' + str(givecoins) + ' coins')
-            except ValueError:
-                print('That is not a number!')
+            if ' ' in command:
+              splitlist = command.split(" ")
+              try:
+                  givecoins = int(splitlist[1])
+                  var.player_coins += givecoins
+                  print('Gave ' + str(givecoins) + ' coins')
+              except ValueError:
+                  print('That is not a number!')
+            else:
+              print('No value provided')
         else:
             print('Nice try but only admins can do that')
 
     elif '/sethealth' in command:
         valid_command = True
         if var.name in var.admins:
-            splitlist = command.split(" ")
-            try:
-              var.player_health = int(splitlist[1])
-              print('Your health is now '+str(var.player_health))
-            except ValueError:
-              print('That is not a number!')
+            if ' ' in command: 
+              splitlist = command.split(" ")
+              try:
+                var.player_health = int(splitlist[1])
+                print('Your health is now '+str(var.player_health))
+              except ValueError:
+                 print('That is not a number!')
+
+            else:
+              print('No value provided')
         else:
             print('Nice try but only admins can do that')
 
     elif '/setattack' in command:
         valid_command = True
         if var.name in var.admins:
-            splitlist = command.split(" ")
-            try:
-              var.player_attack = int(splitlist[1])
-              print('Your attack is now '+str(var.player_attack))
-            except ValueError:
-              print('That is not a number!')
+            if ' ' in command:
+              splitlist = command.split(" ")
+              try:
+                var.player_attack = int(splitlist[1])
+                print('Your attack is now '+str(var.player_attack))
+              except ValueError:
+                print('That is not a number!')
+            else:
+              print('No value provided')
         else:
             print('Nice try but only admins can do that')
 
@@ -321,12 +342,15 @@ Stats for {var.name}:
     elif '/setdefense' in command:
         valid_command = True
         if var.name in var.admins:
-            splitlist = command.split(" ")
-            try:
-              var.player_defense = int(splitlist[1])
-              print('Your defense is now '+str(var.player_defense))
-            except ValueError:
-              print('That is not a number!')
+            if ' ' in command:
+              splitlist = command.split(" ")
+              try:
+                var.player_defense = int(splitlist[1])
+                print('Your defense is now '+str(var.player_defense))
+              except ValueError:
+                print('That is not a number!')
+            else:
+              print('No value provided')
         else:
             print('Nice try but only admins can do that')
 
@@ -364,7 +388,3 @@ Stats for {var.name}:
 
     valid_command = False
     var.save_data(var.name, var.player_attack, var.player_defense, var.player_health, var.player_coins)
-
-
-
-atexit.register(var.save_data)

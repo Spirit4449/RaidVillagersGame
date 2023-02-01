@@ -4,6 +4,7 @@ import csv
 state = ''
 
 name = ''
+loginDate = ''
 
 tutorial = True
 
@@ -15,9 +16,11 @@ player_coins = 0
 max_health = 100
 
 
-extra_damage = False
+raid_attack = 0
+raid_defense = 0
 raid_coins = 0
-special_event = []
+double_damage = False
+halftimesdamage = False
 
 village_health = None
 
@@ -27,7 +30,7 @@ coindoubler = False
 generated_Data = []
 
 
-admins = ['nischay', 'george', 'logan']
+admins = ['nischay', 'george', 'logan', 'mr. daab', 'mrdaab', 'mr daab', 'charles']
 
 weaponlist = ['katana', 'ak47', 'sword', 'knife', 'grenade', 'stick', 'baseball bat', 'shotgun', 'atomic bomb', 'bow and arrow', 'spear', 'electric rifle', 'pistol', 'water gun', 'shuriken', 'nunchucks', 'poison bottle', 'rocket launcher' 'machine gun', 'dynamite', 'bomb', 'dagger', 'revolver', 'targeted missiles', 'hand cannon', 'hamer', 'boomerang', 'javelin', 'plasma gun']
 
@@ -71,7 +74,8 @@ choicecopylist = [
 
 
 choicehouselist = [
-    {"event": "You successfully dealt ** damage to the house with your weapon.", "weight": 1, "xdmg":28, "ydmg": 39}
+    {"event": "You successfully dealt ** damage to the house with your weapon.", "weight": .5, "xdmg":21, "ydmg": 39},
+    {"event": "You completely destroyed the house and dealt ** damage.", "weight": .5, "xdmg":19, "ydmg": 35}
 ]
 
 houseweights = [event["weight"] for event in choicehouselist]
@@ -309,18 +313,24 @@ def read_Data(file_Name):
   return data_List
 
 
-def save_data(player_name, player_attack, player_defense, player_health, player_coins):
+def save_data(player_name=None, player_attack=None, player_defense=None, player_health=None, player_coins=None, loginDate=None):
     # Read data from csv file into a list
     data_list = read_Data('database.csv')
     
     # Iterate through the list and update values for the specified player
+    print('Exit data stuff')
     for i in range(len(data_list)):
-      
         if data_list[i][0] == player_name:
-            data_list[i][1] = player_attack
-            data_list[i][2] = player_defense
-            data_list[i][3] = player_health
-            data_list[i][4] = player_coins
+            if player_attack != None:
+              data_list[i][1] = player_attack
+            if player_defense != None:
+              data_list[i][2] = player_defense
+            if player_health != None:
+              data_list[i][3] = player_health
+            if player_coins != None:
+              data_list[i][4] = player_coins
+            if loginDate != None:
+              data_list[i][5] = loginDate
             
     # Write the updated data back to the csv file
     with open('database.csv', 'w', newline='') as file:
