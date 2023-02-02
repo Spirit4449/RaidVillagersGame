@@ -8,12 +8,12 @@ loginDate = ''
 
 tutorial = True
 
-player_health = 100
+player_health = 115
 player_defense = 5
 player_attack = 5
 player_coins = 0
 
-max_health = 100
+max_health = 115
 
 
 raid_attack = 0
@@ -30,9 +30,11 @@ coindoubler = False
 generated_Data = []
 
 
-admins = ['nischay', 'george', 'logan', 'mr. daab', 'mrdaab', 'mr daab', 'charles']
+admins = ['nischay', 'george', 'logan',
+          'mr. daab', 'mrdaab', 'mr daab', 'charles']
 
-weaponlist = ['katana', 'ak47', 'sword', 'knife', 'grenade', 'stick', 'baseball bat', 'shotgun', 'atomic bomb', 'bow and arrow', 'spear', 'electric rifle', 'pistol', 'water gun', 'shuriken', 'nunchucks', 'poison bottle', 'rocket launcher' 'machine gun', 'dynamite', 'bomb', 'dagger', 'revolver', 'targeted missiles', 'hand cannon', 'hamer', 'boomerang', 'javelin', 'plasma gun']
+weaponlist = ['katana', 'ak47', 'sword', 'knife', 'grenade', 'stick', 'baseball bat', 'shotgun', 'atomic bomb', 'bow and arrow', 'spear', 'electric rifle', 'pistol', 'water gun', 'shuriken',
+              'nunchucks', 'poison bottle', 'rocket launcher' 'machine gun', 'dynamite', 'bomb', 'dagger', 'revolver', 'targeted missiles', 'hand cannon', 'hamer', 'boomerang', 'javelin', 'plasma gun']
 
 choicelist = [
     ' a house',
@@ -72,10 +74,11 @@ choicecopylist = [
 ]
 
 
-
 choicehouselist = [
-    {"event": "You successfully dealt ** damage to the house with your weapon.", "weight": .5, "xdmg":21, "ydmg": 39},
-    {"event": "You completely destroyed the house and dealt ** damage.", "weight": .5, "xdmg":19, "ydmg": 35}
+    {"event": "You successfully dealt ** damage to the house with your weapon.",
+        "weight": .5, "xdmg": 21, "ydmg": 39},
+    {"event": "You completely destroyed the house and dealt ** damage.",
+        "weight": .5, "xdmg": 19, "ydmg": 35}
 ]
 
 houseweights = [event["weight"] for event in choicehouselist]
@@ -89,7 +92,8 @@ choiceraidlist = [
         "weight": 0.3, "xcoins": 50, "ycoins": 80},
     {"event": "You got shot by the home owner and took -- damage",
         "weight": 0.08, "xhlth": 20, "yhlth": 35},
-    {"event": "The home owner chased you and you tried to jump out of the window and took -- damage.", "weight": 0.08, "xhlth": 8, "yhlth": 20}
+    {"event": "The home owner chased you and you tried to jump out of the window and took -- damage.",
+        "weight": 0.08, "xhlth": 8, "yhlth": 20}
 ]
 
 raidweights = [event["weight"] for event in choiceraidlist]
@@ -191,24 +195,36 @@ choiceransomlist = [
 
 ransomweights = [event["weight"] for event in choiceransomlist]
 
-choicesneaklist = [    
-    {"event": "You manage to sneak into the town hall and steal valuable treasures. You caused ** damage and gained ++ coins.", "weight": 0.23, "xdmg": 10, "ydmg": 15, "xcoins": 50, "ycoins": 100},    
-    {"event": "The town hall's guards put up a fight, but you were able to steal ++ coins and deal ** damage.", "weight": 0.21, "xdmg": 5, "ydmg": 10, "xcoins": 75, "ycoins": 125},    
-    {"event": "You successfully infiltrate the town hall and retrieve important documents, gaining ++ coins.", "weight": 0.21, "xcoins": 50, "ycoins": 100},    
-    {"event": "You were able to sneak into the town hall undetected and grab valuable artifacts, earning ++ coins.", "weight": 0.14, "xcoins": 60, "ycoins": 90},    
-    {"event": "You were caught by the guards while trying to sneak into the town hall, taking -- damage.", "weight": 0.1, "xhlth": 10, "yhlth": 30},
-    {"event": "You were caught by the guards and had to fight your way out of the town hall, taking -- damage and losing coins.", "weight": 0.11, "xhlth": 5, "yhlth": 20}
+choicesneaklist = [
+    {"event": "You manage to sneak into the town hall and steal valuable treasures. You caused ** damage and gained ++ coins.",
+        "weight": 0.23, "xdmg": 10, "ydmg": 15, "xcoins": 50, "ycoins": 100},
+    {"event": "The town hall's guards put up a fight, but you were able to steal ++ coins and deal ** damage.",
+        "weight": 0.21, "xdmg": 5, "ydmg": 10, "xcoins": 75, "ycoins": 125},
+    {"event": "You successfully infiltrate the town hall and retrieve important documents, gaining ++ coins.",
+        "weight": 0.21, "xcoins": 50, "ycoins": 100},
+    {"event": "You were able to sneak into the town hall undetected and grab valuable artifacts, earning ++ coins.",
+        "weight": 0.14, "xcoins": 60, "ycoins": 90},
+    {"event": "You were caught by the guards while trying to sneak into the town hall, taking -- damage.",
+        "weight": 0.1, "xhlth": 10, "yhlth": 30},
+    {"event": "You were caught by the guards and had to fight your way out of the town hall, taking -- damage and losing coins.",
+        "weight": 0.11, "xhlth": 5, "yhlth": 20}
 ]
 
 sneakweights = [event["weight"] for event in choicesneaklist]
 
-choicefarmlist = [    
-    {"event": "You successfully raid the farm, stealing valuable livestock, doing ** damage, and earning ++ coins.", "weight": 0.15, "xdmg": 22, "ydmg": 37, "xcoins": 30, "ycoins": 45},   
-    {"event": "You raid the farm and find a hidden stash of coins, gaining a total of ++ coins.", "weight": 0.18, "xcoins": 100, "ycoins": 150},
-    {"event": "You set fire to the farm as you raid, causing ** hitpoints of widespread damage and gaining ++ coins.", "weight": 0.12, "xdmg": 20, "ydmg": 30, "xcoins": 30, "ycoins": 60},
-    {"event": "The farm owner put up a fight, but you were able to steal ++ coins and deal ** damage.", "weight": 0.11, "xdmg": 5, "ydmg": 10, "xcoins": 50, "ycoins": 75},      
-    {"event": "The farm owner was able to call for backup and you had to flee the scene, taking -- damage.", "weight": 0.1, "xhlth": 19, "yhlth": 30},
-    {"event": "You were caught by the farmers while trying to raid the farm, taking -- damage.", "weight": 0.09, "xhlth": 5, "yhlth": 20},
+choicefarmlist = [
+    {"event": "You successfully raid the farm, stealing valuable livestock, doing ** damage, and earning ++ coins.",
+        "weight": 0.15, "xdmg": 22, "ydmg": 37, "xcoins": 30, "ycoins": 45},
+    {"event": "You raid the farm and find a hidden stash of coins, gaining a total of ++ coins.",
+        "weight": 0.18, "xcoins": 100, "ycoins": 150},
+    {"event": "You set fire to the farm as you raid, causing ** hitpoints of widespread damage and gaining ++ coins.",
+        "weight": 0.12, "xdmg": 20, "ydmg": 30, "xcoins": 30, "ycoins": 60},
+    {"event": "The farm owner put up a fight, but you were able to steal ++ coins and deal ** damage.",
+        "weight": 0.11, "xdmg": 5, "ydmg": 10, "xcoins": 50, "ycoins": 75},
+    {"event": "The farm owner was able to call for backup and you had to flee the scene, taking -- damage.",
+        "weight": 0.1, "xhlth": 19, "yhlth": 30},
+    {"event": "You were caught by the farmers while trying to raid the farm, taking -- damage.",
+        "weight": 0.09, "xhlth": 5, "yhlth": 20},
     {"event": "You raid the farm but find nothing of value and leave empty handed", "weight": 0.12},
     {"event": "The farm owner was able to call for backup and you had to flee the scene, losing coins.", "weight": 0.1},
 ]
@@ -216,11 +232,16 @@ choicefarmlist = [
 farmweights = [event["weight"] for event in choicefarmlist]
 
 choicemarketlist = [
-    {"event": "You successfully loot the marketplace, dealing ** damage and earning ++ coins worth of stolen goods.", "weight": 0.26, "xdmg": 30, "ydmg": 50, "xcoins": 50, "ycoins": 80},
-    {"event": "You rob the cash register and steal ++ coins from inside and deal ** damage to the market.", "weight": 0.28, "xdmg": 25, "ydmg": 41, "xcoins": 100, "ycoins": 150},
-    {"event": "As you loot the marketplace, a guard spots you and deals -- damage before you can escape.", "weight": 0.1, "xhlth": 5, "yhlth": 20},
-    {"event": "You try to loot the marketplace but are unsuccessful and end up getting injured. You take -- damage.", "weight": 0.1, "xhlth": 5, "yhlth": 10},
-    {"event": "You tried to knock out the marketeer but he blocks your punch and acutally knocks you out. You took -- damage. Talk about karma.", "weight": 0.1, "xhlth": 28, "yhlth": 40},
+    {"event": "You successfully loot the marketplace, dealing ** damage and earning ++ coins worth of stolen goods.",
+        "weight": 0.26, "xdmg": 30, "ydmg": 50, "xcoins": 50, "ycoins": 80},
+    {"event": "You rob the cash register and steal ++ coins from inside and deal ** damage to the market.",
+        "weight": 0.28, "xdmg": 25, "ydmg": 41, "xcoins": 100, "ycoins": 150},
+    {"event": "As you loot the marketplace, a guard spots you and deals -- damage before you can escape.",
+        "weight": 0.1, "xhlth": 5, "yhlth": 20},
+    {"event": "You try to loot the marketplace but are unsuccessful and end up getting injured. You take -- damage.",
+        "weight": 0.1, "xhlth": 5, "yhlth": 10},
+    {"event": "You tried to knock out the marketeer but he blocks your punch and acutally knocks you out. You took -- damage. Talk about karma.",
+        "weight": 0.1, "xhlth": 28, "yhlth": 40},
     {"event": "You attempt to loot the marketplace but find nothing of value and leave empty handed.", "weight": 0.15}
 ]
 marketweights = [event["weight"] for event in choicemarketlist]
@@ -228,50 +249,60 @@ marketweights = [event["weight"] for event in choicemarketlist]
 
 choicelibrarylist = [
     {"event": "You successfully infiltrate the library and find a valuable book gaining useful information. You learned the art of attack and now your attack is significantly higher for the rest of the battle.", "weight": 0.2},
-    {"event": "You sneak into the library and steal important books, earning ++ coins.", "weight": 0.2, "xcoins": 75, "ycoins": 125},
+    {"event": "You sneak into the library and steal important books, earning ++ coins.",
+        "weight": 0.2, "xcoins": 75, "ycoins": 125},
     {"event": "As you infiltrate the library, a guard spots you and you are forced to flee empty handed.", "weight": 0.16},
-    {"event": "You try to infiltrate the library but are caught and thrown in jail, taking -- damage.", "weight": 0.13, "xhlth": 25, "yhlth": 50},
-    {"event": "You attempt to infiltrate the library but trip an alarm and have to fight off security, taking -- damage.", "weight": 0.1, "xhlth": 12, "yhlth": 30},
-    {"event": "You successfully sneak into the library undetected and find a rare, antique book that brings in ++ coins when sold", "weight": 0.12, "xcoins": 50, "ycoins": 87},
-    {"event": "While exploring the library, you stumble upon a secret room containing valuable artifacts and ++ coins.", "weight": 0.12, "xcoins": 30, "ycoins": 100}
+    {"event": "You try to infiltrate the library but are caught and thrown in jail, taking -- damage.",
+        "weight": 0.13, "xhlth": 25, "yhlth": 50},
+    {"event": "You attempt to infiltrate the library but trip an alarm and have to fight off security, taking -- damage.",
+        "weight": 0.1, "xhlth": 12, "yhlth": 30},
+    {"event": "You successfully sneak into the library undetected and find a rare, antique book that brings in ++ coins when sold",
+        "weight": 0.12, "xcoins": 50, "ycoins": 87},
+    {"event": "While exploring the library, you stumble upon a secret room containing valuable artifacts and ++ coins.",
+        "weight": 0.12, "xcoins": 30, "ycoins": 100}
 ]
 libraryweights = [event["weight"] for event in choicelibrarylist]
 
 choicehidelist = [
-    {"event": "You found a hidden stash of ++ coins in the well.", 
-    "weight": 0.1, "xcoins": 50, "ycoins": 80},
+    {"event": "You found a hidden stash of ++ coins in the well.",
+     "weight": 0.1, "xcoins": 50, "ycoins": 80},
     {"event": "You hide in the well successfully, but took -- damage from the sharp edges.",
-    "weight": 0.1, "xhlth": 5, "yhlth": 15},
+     "weight": 0.1, "xhlth": 5, "yhlth": 15},
     {"event": "You stumbled upon a group of bandits and quickly hide in the well. You dealt ** damage to them when they got too close.",
-    "weight": 0.21, "xdmg": 20, "ydmg": 35},
+     "weight": 0.21, "xdmg": 20, "ydmg": 35},
     {"event": "You successfully evaded a dangerous situation by hiding in the well. You dealt ** damage and gained ++ coins.",
-    "weight": 0.23, "xdmg": 20, "ydmg": 35, "xcoins": 30, "ycoins": 50},
+     "weight": 0.23, "xdmg": 20, "ydmg": 35, "xcoins": 30, "ycoins": 50},
     {"event": "You found a secret passage while hiding in the well and gained ++ coins.",
-    "weight": 0.1, "xcoins": 30, "ycoins": 60},
+     "weight": 0.1, "xcoins": 30, "ycoins": 60},
     {"event": "You were able to catch your breath and heal yourself while hiding in the well.",
-    "weight": 0.12},
+     "weight": 0.12},
     {"event": "The well was filled with toxic gas and you took -- damage.",
-    "weight": 0.07, "xhlth": 10, "yhlth": 30},
+     "weight": 0.07, "xhlth": 10, "yhlth": 30},
     {"event": "You were ambushed by enemies while hiding in the well and took -- damage.",
-    "weight": 0.07, "xhlth": 8, "yhlth": 20}
+     "weight": 0.07, "xhlth": 8, "yhlth": 20}
 ]
 
 hideweights = [event["weight"] for event in choicehidelist]
 
-choicedisablelist = [    
-    {"event": "You successfully disabled the defenses, dealing ** damage to the enemy.",     "weight": 0.15, "xdmg": 30, "ydmg": 40},    
+choicedisablelist = [
+    {"event": "You successfully disabled the defenses, dealing ** damage to the enemy.",
+        "weight": 0.15, "xdmg": 30, "ydmg": 40},
     {"event": "You disabled the defenses and found ++ coins in the process. Your next attack will do 2x damage.",
-    "weight": 0.13, "xcoins": 40, "ycoins": 60},    
-    {"event": "The defenses were weakened and you easily took them down, dealing ** damage and gaining ++ coins!", 
-    "weight": 0.12, "xdmg": 35, "ydmg": 50, "xcoins": 50, "ycoins":60 },    
-    {"event": "You took advantage of the weakened defenses and gained ++ coins. Your next attack will do 1.5x damage",     
-    "weight": 0.13, "xcoins": 50, "ycoins": 75},    
-    {"event": "The defenses were easy to take down and you made a quick getaway with ++ coins. You gain +5 attack for the rest of the battle.", 
-    "weight": 0.13, "xcoins": 60, "ycoins": 90},    
-    {"event": "You used your cunning tactics and disabled the defenses, gaining ++ coins.",     "weight": 0.1, "xcoins": 70, "ycoins": 100},    
-    {"event": "You encountered resistance while disabling the defenses and took -- damage.",     "weight": 0.08, "xhlth": 20, "yhlth": 30},    
-    {"event": "The defenses were too strong and you took a significant amount of -- damage.",     "weight": 0.08, "xhlth": 10, "yhlth": 20},
-    {"event": "You encountered a booby trap while you were disabling the defenses and took -- damage", "weight": 0.08, "xhlth": 15, "yhlth": 27}
+     "weight": 0.13, "xcoins": 40, "ycoins": 60},
+    {"event": "The defenses were weakened and you easily took them down, dealing ** damage and gaining ++ coins!",
+     "weight": 0.12, "xdmg": 35, "ydmg": 50, "xcoins": 50, "ycoins": 60},
+    {"event": "You took advantage of the weakened defenses and gained ++ coins. Your next attack will do 1.5x damage",
+     "weight": 0.13, "xcoins": 50, "ycoins": 75},
+    {"event": "The defenses were easy to take down and you made a quick getaway with ++ coins. You gain +5 attack for the rest of the battle.",
+     "weight": 0.13, "xcoins": 60, "ycoins": 90},
+    {"event": "You used your cunning tactics and disabled the defenses, gaining ++ coins.",
+        "weight": 0.1, "xcoins": 70, "ycoins": 100},
+    {"event": "You encountered resistance while disabling the defenses and took -- damage.",
+        "weight": 0.08, "xhlth": 20, "yhlth": 30},
+    {"event": "The defenses were too strong and you took a significant amount of -- damage.",
+        "weight": 0.08, "xhlth": 10, "yhlth": 20},
+    {"event": "You encountered a booby trap while you were disabling the defenses and took -- damage",
+        "weight": 0.08, "xhlth": 15, "yhlth": 27}
 ]
 
 disableweights = [event["weight"] for event in choicedisablelist]
@@ -285,14 +316,16 @@ choicesabotagelist = [
         "weight": 0.13, "xcoins": 130, "ycoins": 200},
     {"event": "The goblins heard you enter the mine and fought you. You took -- damage.",
         "weight": 0.1, "xhlth": 20, "yhlth": 31},
-    {"event": "You attempted to sabotage the mine but failed and took -- damage", "weight": 0.1, "xhlth": 8, "yhlth": 20},
+    {"event": "You attempted to sabotage the mine but failed and took -- damage",
+        "weight": 0.1, "xhlth": 8, "yhlth": 20},
     {"event": "You caused a cave-in and dealt ** damage to the mine and gained ++ coins",
         "weight": 0.15, "xdmg": 31, "ydmg": 37, "xcoins": 60, "ycoins": 80},
     {"event": "You found DIAMONDS in the mine and traded them for ++ coins!!!",
         "weight": 0.1, "xcoins": 130, "ycoins": 220},
     {"event": "You were caught by the goblins and beat to the ground losing -- health",
         "weight": 0.07, "xhlth": 30, "yhlth": 50},
-    {"event": "You were injured while planting a bomb and took -- damage", "weight": 0.08, "xhlth": 10, "yhlth": 20}
+    {"event": "You were injured while planting a bomb and took -- damage",
+        "weight": 0.08, "xhlth": 10, "yhlth": 20}
 ]
 
 sabotageweights = [event["weight"] for event in choicesabotagelist]
@@ -300,39 +333,52 @@ sabotageweights = [event["weight"] for event in choicesabotagelist]
 
 def read_Data(file_Name):
 
-  data_List = []
-  
-  #Opens the file and stores it as a variable file
-  with open(file_Name, mode='r') as file:
-    #Read file
-    csvFile = csv.reader(file)
-  
-    #Show contents of file
-    for lines in csvFile:
-      data_List.append(lines)
-  return data_List
+    data_List = []
+
+    # Opens the file and stores it as a variable file
+    with open(file_Name, mode='r') as file:
+        # Read file
+        csvFile = csv.reader(file)
+
+        # Show contents of file
+        for lines in csvFile:
+            data_List.append(lines)
+    return data_List
 
 
 def save_data(player_name=None, player_attack=None, player_defense=None, player_health=None, player_coins=None, loginDate=None):
     # Read data from csv file into a list
     data_list = read_Data('database.csv')
-    
+
     # Iterate through the list and update values for the specified player
-    print('Exit data stuff')
     for i in range(len(data_list)):
         if data_list[i][0] == player_name:
             if player_attack != None:
-              data_list[i][1] = player_attack
+                data_list[i][1] = player_attack
             if player_defense != None:
-              data_list[i][2] = player_defense
+                data_list[i][2] = player_defense
             if player_health != None:
-              data_list[i][3] = player_health
+                data_list[i][3] = player_health
             if player_coins != None:
-              data_list[i][4] = player_coins
+                data_list[i][4] = player_coins
             if loginDate != None:
-              data_list[i][5] = loginDate
-            
+                data_list[i][5] = loginDate
+
     # Write the updated data back to the csv file
     with open('database.csv', 'w', newline='') as file:
         csv_writer = csv.writer(file)
         csv_writer.writerows(data_list)
+
+
+RESET = '\u001b[0m'
+
+
+CLEAR_LINE = '\u001b[2K'
+CLEAR_SCREEN = '\u001b[2J'
+
+UP = '\u001b[1A'
+Down = '\u001b[1B'
+Right = '\u001b[1C'
+Left = '\u001b[2D'
+
+DEL = '<none>'
