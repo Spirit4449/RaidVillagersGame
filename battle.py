@@ -103,7 +103,7 @@ c) {weapon3}
     if player_weapon == 'c':
         player_weapon = weapon3
 
-    if player_weapon == 'nuclear bomb':
+    if player_weapon == 'atomic bomb':
         print('You choose such an overpowered weapon that you automatically won the game!')
         var.raid_coins += 200
         var.village_health = 0
@@ -140,6 +140,7 @@ def battle(player_weapon):
         var.raid_coins = 0
         var.raid_attack = 0
         var.raid_defense = 0
+        time.sleep(1)
         return
     if var.player_health <= 0:
         if var.lifesaver == True:
@@ -329,6 +330,8 @@ def battle_result(player_choice, player_weapon):
         elif selected_event == var.choicehidelist[5]['event']:
             result_creator(selected_event)
             var.player_health += 20
+            if var.player_health >= var.max_health:
+              var.player_health = var.max_health
         elif selected_event == var.choicehidelist[6]['event']:
             result_creator(
                 selected_event, xhlth=var.choicehidelist[6]["xhlth"], yhlth=var.choicehidelist[6]["yhlth"])
@@ -615,9 +618,10 @@ try:
             random_coins = random.randrange(xcoins, ycoins)
         if var.coindoubler == True:
             random_coins *= 2
-        selected_event = selected_event.replace(
+            var.raid_coins += random_coins
+            selected_event = selected_event.replace(
             "++", Fore.LIGHTYELLOW_EX + str(random_coins) + Fore.RESET)
-        var.raid_coins += random_coins
+       
         if '--' in selected_event:
             random_damage = random.randrange(xhlth, yhlth)
             health = int(random_damage * 90 / 100)
@@ -632,4 +636,5 @@ try:
         print(selected_event)
 
 except Exception:
-    logging.error(traceback.format_exc())
+    print('An error occured :(')
+    #logging.error(traceback.format_exc())

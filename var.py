@@ -31,7 +31,7 @@ generated_Data = []
 
 
 admins = ['nischay', 'george', 'logan',
-          'mr. daab', 'mrdaab', 'mr daab', 'charles']
+          'mr. daab', 'mrdaab', 'mr daab', 'charles', 'mr. lin']
 
 weaponlist = ['katana', 'ak47', 'sword', 'knife', 'grenade', 'stick', 'baseball bat', 'shotgun', 'atomic bomb', 'bow and arrow', 'spear', 'electric rifle', 'pistol', 'water gun', 'shuriken',
               'nunchucks', 'poison bottle', 'rocket launcher' 'machine gun', 'dynamite', 'bomb', 'dagger', 'revolver', 'targeted missiles', 'hand cannon', 'hamer', 'boomerang', 'javelin', 'plasma gun']
@@ -351,7 +351,6 @@ def save_data(player_name=None, player_attack=None, player_defense=None, player_
     data_list = read_Data('database.csv')
 
     # Iterate through the list and update values for the specified player
-    print('Exit data stuff')
     for i in range(len(data_list)):
         if data_list[i][0] == player_name:
             if player_attack != None:

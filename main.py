@@ -3,7 +3,7 @@
 
 import var
 import time
-# import random
+import random
 import csv
 import sys
 import threading
@@ -11,6 +11,7 @@ from datetime import date
 from battle import battle_start
 from colorama import Fore, Style, init
 init(autoreset=True)
+
 
 
 def add_Data(data, file_Name='database.csv'):
@@ -45,9 +46,6 @@ print_slow('Player Name: ')
 var.name = input(Fore.CYAN).lower()
 print(Style.RESET_ALL, end='')
 
-global today
-today = date.today()
-var.loginDate = today.strftime("%d-%m-%y")
 
 def win():
     atklevel = int((var.player_attack) / 5)
@@ -118,8 +116,8 @@ retrievedata()
 loginlist = var.loginDate.split("-")
 # Tutorial
 if var.tutorial == True:
-    print(f"Welcome to Raid Villagers {var.name}! Raid Villagers is an adventure game where you play as a raider attacking villages for gold and treasure. Your goal is to become the most powerful raider by upgrading your character's stats. Are you ready to embark on this epic adventure?\n")
-    time.sleep(5)
+    print_slow(f"Welcome to Raid Villagers {var.name}! Raid Villagers is an adventure game where you play as a raider attacking villages for gold and treasure. Your goal is to become the most powerful raider by upgrading your character's stats. Are you ready to embark on this epic adventure?\n", 0.01)
+    time.sleep(8)
     print('Upgrade all of your players stats to level 10 to win the game!\n')
     time.sleep(2)
 
@@ -282,8 +280,8 @@ while True:
                 var.player_coins -= atkcoins
                 var.player_attack += 5
                 atklevel += 1
-                print('You successfully upgraded your attack to level ' +
-                      str(atklevel)+' for '+str(atkcoins)+' coins')
+                print('You successfully upgraded your attack to level ' + str(atklevel)+' for '+str(atkcoins)+' coins')
+                win()
             else:
                 print("You don't have enough coins!")
         else:
@@ -299,6 +297,7 @@ while True:
                 deflevel += 1
                 print('You successfully upgraded your defense to level ' +
                       str(deflevel)+' for '+str(defcoins)+' coins')
+                win()
             else:
                 print("You don't have enough coins!")
         else:
@@ -314,6 +313,7 @@ while True:
                 var.player_health = var.max_health
                 print('You successfully upgraded your health to level ' +
                       str(hlthlevel)+' for '+str(hlthcoins)+' coins')
+                win()
             else:
                 print("You don't have enough coins!")
         else:
@@ -412,11 +412,22 @@ Stats for {var.name}:
             print('Nice try but only admins can do that')
 
     elif command == '/hack':
-        for i in range(0, 16):
-            for j in range(0, 16):
-                code = str(i * 16 + j)
-                sys.stdout.write(u"\u001b[48;5;" + code + "m " + code.ljust(4))
-            print(u"\u001b[0m")
+        if var.name in var.admins:
+          print('I warned you not to run this command...')
+          time.sleep(1)
+          for i in range(0, 16):
+              for j in range(0, 16):
+                  code = str(i * 16 + j)
+                  sys.stdout.write(u"\u001b[48;5;" + code + "m " + code.ljust(4))
+              print(u"\u001b[0m")
+          x = 0
+          colors = [Fore.BLACK, Fore.BLUE, Fore.CYAN, Fore.GREEN, Fore.RED, Fore.MAGENTA, Fore.YELLOW]
+          while x <= 10000:
+            color = random.choice(colors)
+            print(color + '01', end='')
+            x+=1
+        else:
+          print('Nice try but only admins can do that')
 
     elif command == '/resetall':
         valid_command = True

@@ -257,6 +257,14 @@ optional = false
 python-versions = ">=3.7"
 
 [[package]]
+name = "numpy"
+version = "1.24.1"
+description = "Fundamental package for array computing in Python"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[[package]]
 name = "packaging"
 version = "23.0"
 description = "Core utilities for Python packages"
@@ -324,14 +332,6 @@ description = ""
 category = "main"
 optional = false
 python-versions = ">=3.7"
-
-[[package]]
-name = "pycopy-atexit"
-version = "0.0.0"
-description = "Dummy atexit module for Pycopy"
-category = "main"
-optional = false
-python-versions = "*"
 
 [[package]]
 name = "pycparser"
@@ -580,7 +580,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.10.0,<3.11"
-content-hash = "b06890b3b6b8c7aae0e7d2d8d43d012165bb309bebd83328506252fb0467b403"
+content-hash = "f9def7563cac1f0a15c0c9b0b321cbccf4f22c555309c6897dd403ade9117cdc"
 
 [metadata.files]
 aiohttp = []
@@ -605,13 +605,13 @@ jedi = []
 jinja2 = []
 markupsafe = []
 multidict = []
+numpy = []
 packaging = []
 parso = []
 passlib = []
 platformdirs = []
 pluggy = []
 protobuf = []
-pycopy-atexit = []
 pycparser = []
 pycryptodomex = []
 pyflakes = []
