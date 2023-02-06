@@ -10,7 +10,7 @@ from colorama import Fore, Style, init
 init(autoreset=True)
 
 # Print slow function
-def print_slow(text, speed=0.05):
+def print_slow(text, speed=0.01):
     for character in text:
         sys.stdout.write(character)
         sys.stdout.flush()
@@ -412,7 +412,7 @@ def battle_result(player_choice, player_weapon):
             result_creator(
                 selected_event, xhlth=var.choicemarketlist[3]["xhlth"], yhlth=var.choicemarketlist[3]["yhlth"])
         elif selected_event == var.choicemarketlist[4]['event']:
-            result_creator(selected_event, xhlth=var.choicemarketlist[4]["hlth"], yhlth=var.choicemarketlist[4]
+            result_creator(selected_event, xhlth=var.choicemarketlist[4]["xhlth"], yhlth=var.choicemarketlist[4]
                            ["yhlth"])
         elif selected_event == var.choicemarketlist[5]['event']:
             result_creator(selected_event)
@@ -649,11 +649,11 @@ try:
                 "**", Fore.MAGENTA + str(attack) + Fore.RESET)
         if '++' in selected_event:
             random_coins = random.randrange(xcoins, ycoins)
-        if var.coindoubler == True:
-            random_coins *= 2
-            var.raid_coins += random_coins
-            selected_event = selected_event.replace(
-            "++", Fore.LIGHTYELLOW_EX + str(random_coins) + Fore.RESET)
+            if var.coindoubler == True:
+                random_coins *= 2
+                var.raid_coins += random_coins
+                selected_event = selected_event.replace(
+                "++", Fore.LIGHTYELLOW_EX + str(random_coins) + Fore.RESET)
        
         if '--' in selected_event:
             random_damage = random.randrange(xhlth, yhlth)

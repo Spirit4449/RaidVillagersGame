@@ -35,7 +35,7 @@ def add_Data(data, file_Name='database.csv'):
 
 
 #Function to print text slowly
-def print_slow(text, speed=0.05):
+def print_slow(text, speed=0.01):
     for character in text:
         sys.stdout.write(character)
         sys.stdout.flush()
@@ -69,9 +69,9 @@ def win():
         print_slow('All of your stats are now maxed!')
         time.sleep(2)
         print(f'''
-    🗡️  Attack - Level {atklevel} {Fore.BLUE}(MAX)
-    🛡️  Defense - Level {deflevel} {Fore.BLUE}(MAX)
-    ❤️  Health - Level {hlthlevel} {Fore.BLUE}(MAX)
+    🗡️  Attack - Level {atklevel} {Fore.BLUE}(MAX){Fore.RESET}
+    🛡️  Defense - Level {deflevel} {Fore.BLUE}(MAX){Fore.RESET}
+    ❤️  Health - Level {hlthlevel} {Fore.BLUE}(MAX){Fore.RESET}
     ''')
         time.sleep(4)
         colorchange = 0
@@ -82,18 +82,18 @@ def win():
                 time.sleep(.8)
                 colorchange += 1
 
-        print_slow('Now that you have beat the game, would you like to continue playing? You can always change your answer later. (Yes or No): ', 0.09)
+        print_slow('Now that you have beat the game, would you like to continue playing? You can always change your answer later. (Yes or No): ')
         while True:
             # Ask if the player wants to keep playing since they won they game or stop playing
             continuePlaying = input(Fore.CYAN)
             if continuePlaying.lower() == 'yes':
                 print(Fore.RESET, end='')
-                print_slow('Ok you are welcome to continue playing. If you would like to restart from the beggining play under another name.', 0.09)
+                print_slow('Ok you are welcome to continue playing. If you would like to restart from the beggining play under another name.\n\n')
                 break
                 return
             elif continuePlaying.lower() == 'no':
                 print(Fore.RESET, end='')
-                print_slow('Ok, I wish you a goodbye! If you would like to play again just use the same name. If you would like to restart from the beggining play under another name.', 0.09)
+                print_slow('Ok, I wish you a goodbye! If you would like to play again just use the same name. If you would like to restart from the beggining play under another name.')
                 exit()
             else:
                 print(Fore.RESET, end='')
