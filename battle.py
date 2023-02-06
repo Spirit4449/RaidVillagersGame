@@ -54,12 +54,16 @@ def battle_start(tutorial=None):
           Fore.YELLOW + Style.BRIGHT + str(var.village_health) + Style.RESET_ALL + ' health')
     time.sleep(2)
 
+
+    atklevel = int((var.player_attack) / 5)
+    deflevel = int((var.player_defense) / 5)
+    hlthlevel = int((var.max_health - 100) / 15)
     # Prints the current stats of the player
     print(f"""
 Your Stats:
-🗡️  Attack: {Fore.MAGENTA}{str(var.player_attack)}{Fore.RESET}
-🛡️  Defense: {Fore.GREEN}{str(var.player_defense)}{Fore.RESET}
-❤️  Health: {Fore.LIGHTRED_EX}{str(var.player_health)}{Fore.RESET}
+🗡️  Attack: {Fore.MAGENTA}{str(var.player_attack)} (Level - {atklevel}){Fore.RESET}
+🛡️  Defense: {Fore.GREEN}{str(var.player_defense)} (Level - {deflevel}){Fore.RESET}
+❤️  Health: {Fore.RED}{str(var.player_health)} (Level - {hlthlevel}){Fore.RESET}
 """)
 
     time.sleep(2)

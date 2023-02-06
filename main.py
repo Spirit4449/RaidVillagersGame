@@ -1,6 +1,5 @@
 # DISCLAIMER: OPEN CONSOLE FULL SCREEN FOR THE BEST EXPERIENCE
 
-
 import var
 import time
 import random
@@ -132,7 +131,7 @@ loginlist = var.loginDate.split("-")
 if var.tutorial == True:
     print_slow(f"Welcome to Raid Villagers {var.name}! Raid Villagers is an adventure game where you play as a raider attacking villages for gold and treasure. Your goal is to become the most powerful raider by upgrading your character's stats. Are you ready to embark on this epic adventure?\n", 0.01)
     time.sleep(8)
-    print('Upgrade all of your players stats to level 10 to win the game!\n')
+    print(Fore.GREEN + 'Upgrade all of your players stats to level 10 to win the game!\n')
     time.sleep(2)
 
     print('Let\'s start by attacking your first village.\n')
@@ -176,6 +175,8 @@ if var.tutorial == True:
         f'You are now ready to play the game! Type {Fore.YELLOW}/help{Fore.RESET} to view the list of commands...')
     var.tutorial = False
 
+# Sets max_health variable to player_health
+var.max_health = var.player_health
 # Creates a variable: valid_command
 valid_command = False
 
@@ -185,6 +186,7 @@ while True:
     var.state = 'menu'
     # Input for the command
     command = input(Fore.CYAN).lower()
+    command = command.strip()
     # Resets the color
     print(Style.RESET_ALL, end="")
 
@@ -301,14 +303,28 @@ while True:
         defcoins = 50 + (50*deflevel)
         hlthcoins = 50 + (50*hlthlevel)
 
+        if int(atklevel) >= 10:
+          atkcoins = 'MAX'
+        else:
+          atlevel = atklevel + 'coins'
+        if int(deflevel) >= 10:
+          defcoins = 'MAX'
+        else:
+          deflevel = deflevel + 'coins'
+        if int(hlthlevel) >= 10:
+          hlthcoins = 'MAX'
+        else:
+          hlthlevel = hlthlevel + 'coins'
+
+  
         print(f"""
 {Style.BRIGHT}UPGRADES        Your coins: {Fore.YELLOW}{var.player_coins}{Style.RESET_ALL}
-🗡️  Attack (Lvl {atklevel}) - {Fore.GREEN}{atkcoins} coins{Fore.RESET}
-     Increases attack by 5     (Max - lvl 10)
-🛡️  Defense (Lvl {deflevel}) - {Fore.GREEN}{defcoins} coins{Fore.RESET}
-     Increases defense by 5     (Max - lvl 10)
-❤️  Health (Lvl {hlthlevel}) - {Fore.GREEN}{hlthcoins} coins{Fore.RESET}
-     Increases max health by 10   (Max - lvl 10)
+🗡️  Attack (Lvl {atklevel}) - {Fore.GREEN}{atkcoins}{Fore.RESET}
+     Increases attack by 5     (Max lvl - 10)
+🛡️  Defense (Lvl {deflevel}) - {Fore.GREEN}{defcoins}{Fore.RESET}
+     Increases defense by 5     (Max lvl - 10)
+❤️  Health (Lvl {hlthlevel}) - {Fore.GREEN}{hlthcoins}{Fore.RESET}
+     Increases max health by 10   (Max lvl - 10)
 {Fore.BLACK}Type /upgrade [stat] to upgrade
 """)
 
@@ -355,8 +371,9 @@ while True:
         if hlthlevel < 10:
             if var.player_coins - hlthcoins >= 0:
                 var.player_coins -= hlthcoins
-                var.max_health += 10
+                var.max_health += 15
                 var.player_health = var.max_health
+                hlthlevel += 1
                 print('You successfully upgraded your health to level ' +
                       str(hlthlevel)+' for '+str(hlthcoins)+' coins')
                 win()
@@ -393,7 +410,7 @@ while True:
 Stats for {var.name}:
 🗡️  Attack: {Fore.MAGENTA}{str(var.player_attack)}{Fore.RESET}  (Level {atklevel})
 🛡️  Defense: {Fore.GREEN}{str(var.player_defense)}{Fore.RESET} (Level {deflevel})
-❤️  Health: {Fore.LIGHTRED_EX}{str(var.player_health)}{Fore.RESET} (Level {hlthlevel})
+❤️  Health: {Fore.RED}{str(var.player_health)}{Fore.RESET} (Level {hlthlevel})
 """)
         # If lifesaver is active print "Livesaver active"
         if var.lifesaver == True:
@@ -408,7 +425,7 @@ Stats for {var.name}:
         print('You currently have ' + str(var.player_coins) + ' coins.')
 
     # Admin command /givecoins
-    elif '/givecoins' in command:
+    elif '/givecoins' in command or '/setcoins' in command:
         valid_command = True
         if var.name in var.admins:
             if ' ' in command:
@@ -501,7 +518,7 @@ Stats for {var.name}:
             var.player_attack = 5
             var.player_defense = 5
             var.player_coins = 0
-            var.player_health = 100
+            var.player_health = 115
             print(Fore.YELLOW + 'Reset all your data')
         else:
             print('Nice try but only admins can do that')
