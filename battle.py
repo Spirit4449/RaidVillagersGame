@@ -5,36 +5,44 @@ import sys
 import traceback
 import logging
 from colorama import Fore, Style, init
+
+# Initializes colorama
 init(autoreset=True)
 
-
+# Print slow function
 def print_slow(text, speed=0.05):
     for character in text:
         sys.stdout.write(character)
         sys.stdout.flush()
         time.sleep(speed)
 
-
+# Starts the battle. Sets village health etc..
 def battle_start(tutorial=None):
+    # Changes state of the game
     var.state = 'battle'
+    # If player health is 0 they cannot start a game
     if var.player_health == 0:
         print(Fore.RED + 'You cannot start a battle with 0 health! Buy meat from the shop to increase your health.')
         return
 
+    # if the tutorial is true, it will guide them through the battle and make it easier to win
     if var.tutorial == True:
         var.village_health = random.randrange(70, 80)
+    # Range of values if player attack is less than 10
     elif var.player_attack <= 10:
         minimum = int((var.player_attack * 150 / 100)) + \
             random.randrange(70, 100)
         maximum = int((var.player_attack * 220 / 100)) + \
             random.randrange(101, 140)
         var.village_health = random.randrange(minimum, maximum)
+    # Range of values if player attack is between 10 and 20
     elif var.player_attack > 10 and var.player_attack <= 20:
         minimum = int((var.player_attack * 150 / 100)) + \
             random.randrange(90, 120)
         maximum = int((var.player_attack * 220 / 100)) + \
             random.randrange(121, 160)
         var.village_health = random.randrange(minimum, maximum)
+    # Range of values if player atack is above 20
     else:
         minimum = int((var.player_attack * 150 / 100)) + \
             random.randrange(140, 180)
@@ -46,6 +54,7 @@ def battle_start(tutorial=None):
           Fore.YELLOW + Style.BRIGHT + str(var.village_health) + Style.RESET_ALL + ' health')
     time.sleep(2)
 
+    # Prints the current stats of the player
     print(f"""
 Your Stats:
 🗡️  Attack: {Fore.MAGENTA}{str(var.player_attack)}{Fore.RESET}
@@ -61,6 +70,7 @@ Your Stats:
 
     global player_weapon
 
+    # Randomly picks the weapons and puts it into 3 choices
     weapon1 = random.choice(var.weaponlist)
     var.weaponlist.remove(weapon1)
     weapon2 = random.choice(var.weaponlist)
@@ -82,9 +92,11 @@ c) {weapon3}
 ''')
     time.sleep(1)
 
+    # Player chooses weapon
     print_slow('Your weapon: ')
     player_weapon = input(Fore.CYAN).lower()
 
+    # The while loop is so the game continues forever if the weapon is not in the weapon list
     while True:
         if player_weapon in var.weaponlist or player_weapon == 'a' or player_weapon == 'b' or player_weapon == 'c':
             break
@@ -103,6 +115,7 @@ c) {weapon3}
     if player_weapon == 'c':
         player_weapon = weapon3
 
+    # Special cases of weapons does special things
     if player_weapon == 'atomic bomb':
         print('You choose such an overpowered weapon that you automatically won the game!')
         var.raid_coins += 200
@@ -130,7 +143,10 @@ c) {weapon3}
     battle(player_weapon)
 
 
+# Now the battle begins
 def battle(player_weapon):
+
+    # If they destroy the village
     if var.village_health <= 0:
         var.player_attack -= var.raid_attack
         var.player_defense += var.raid_defense
@@ -142,7 +158,10 @@ def battle(player_weapon):
         var.raid_defense = 0
         time.sleep(1)
         return
+
+    # If the player dies
     if var.player_health <= 0:
+        # If the player dies with a lifesaver
         if var.lifesaver == True:
             print(Fore.MAGENTA + 'You were killed in the battle but your lifesaver saved you! You have 1 health left. The battle has ended.')
             var.player_health = 1
@@ -152,6 +171,8 @@ def battle(player_weapon):
             var.raid_defense = 0
             var.lifesaver = False
             return
+
+        # If the player dies without a lifesaver
         else:
             print(Fore.RED +
                   'Oh no! You have been killed in the raid! You lost 20% your coins. The battle has ended.')
@@ -171,6 +192,7 @@ def battle(player_weapon):
     global choice2
     global choice3
 
+    # Randomly chooses 3 choices for the player to pick from
     choice1 = random.choice(var.choicelist)
     var.choicelist.remove(choice1)
     choice2 = random.choice(var.choicelist)
@@ -178,6 +200,7 @@ def battle(player_weapon):
     choice3 = random.choice(var.choicelist)
     var.choicelist.remove(choice3)
 
+    # If the choice is 'a house' the game will add the player weapon in front of it
     if choice1 == ' a house':
         choice1 = player_weapon + '' + choice1
     elif choice2 == ' a house':
@@ -185,16 +208,22 @@ def battle(player_weapon):
     elif choice3 == ' a house':
         choice3 = player_weapon + '' + choice3
 
+    # Clears the list for the next line of code
     var.choicelist.clear()
+    # Readds all the choices into the list
     var.choicelist.extend(var.choicecopylist)
+
 
     print('\nChoose an option from the following:\n' + 'a) ' +
           choice1 + '\n' + 'b) ' + choice2 + '\n' + 'c) ' + choice3 + '\n')
     time.sleep(.2)
 
     while True:
+        # Saves data
         var.save_data(var.name, var.player_attack,
                       var.player_defense, var.player_health, var.player_coins)
+        
+        # Player chooses their choice
         print_slow('Your choice: ')
         player_choice = input(Fore.CYAN)
         print(Style.RESET_ALL, end="")
@@ -215,6 +244,7 @@ def battle(player_weapon):
     battle_result(player_choice, player_weapon)
 
 
+# Result of the battle
 def battle_result(player_choice, player_weapon):
 
     if player_choice.lower() == player_weapon + ' a house':
@@ -607,6 +637,9 @@ def battle_result(player_choice, player_weapon):
 try:
     def result_creator(selected_event, xdmg=None, ydmg=None, xcoins=None, ycoins=None, xhlth=None, yhlth=None):
 
+
+
+        # This is where the good stuff happens. It changes the values of the player depending on what response the game picked. It also changes the responses with the updated values that it picked
         if '**' in selected_event:
             random_attack = random.randrange(xdmg, ydmg)
             attack = int((var.player_attack * 80 / 100) +
@@ -635,6 +668,7 @@ try:
 
         print(selected_event)
 
+# Just in case this code bugs out. (its happened before...)
 except Exception:
     print('An error occured :(')
     #logging.error(traceback.format_exc())

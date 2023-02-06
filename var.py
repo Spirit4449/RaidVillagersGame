@@ -1,3 +1,6 @@
+# Variables file. List of variables used by multiple files
+
+
 import csv
 
 
@@ -29,13 +32,15 @@ coindoubler = False
 
 generated_Data = []
 
-
+# These people can use admincommands. (lol)
 admins = ['nischay', 'george', 'logan',
           'mr. daab', 'mrdaab', 'mr daab', 'charles', 'mr. lin']
 
+# Weapons
 weaponlist = ['katana', 'ak47', 'sword', 'knife', 'grenade', 'stick', 'baseball bat', 'shotgun', 'atomic bomb', 'bow and arrow', 'spear', 'electric rifle', 'pistol', 'water gun', 'shuriken',
               'nunchucks', 'poison bottle', 'rocket launcher' 'machine gun', 'dynamite', 'bomb', 'dagger', 'revolver', 'targeted missiles', 'hand cannon', 'hamer', 'boomerang', 'javelin', 'plasma gun']
 
+# Choices
 choicelist = [
     ' a house',
     'Attack a fort',
@@ -54,7 +59,7 @@ choicelist = [
     'Swim in the pool'
 ]
 
-
+# Copied list of choices that reverts changes made in battle.py
 choicecopylist = [
     ' a house',
     'Attack a fort',
@@ -72,6 +77,12 @@ choicecopylist = [
     'Sneak into town hall',
     'Swim in the pool'
 ]
+
+
+
+
+# Long list of responses to all of the choices above. There are about 5-8 responses per each choice and a range of damage, coins, and health the game can pick from. The weights is the percentage the response can be picked.
+
 
 
 choicehouselist = [
@@ -331,6 +342,11 @@ choicesabotagelist = [
 sabotageweights = [event["weight"] for event in choicesabotagelist]
 
 
+
+
+# Functions
+
+# Reads data of a file
 def read_Data(file_Name):
 
     data_List = []
@@ -345,7 +361,7 @@ def read_Data(file_Name):
             data_List.append(lines)
     return data_List
 
-
+# Save data function
 def save_data(player_name=None, player_attack=None, player_defense=None, player_health=None, player_coins=None, loginDate=None):
     # Read data from csv file into a list
     data_list = read_Data('database.csv')
@@ -370,6 +386,7 @@ def save_data(player_name=None, player_attack=None, player_defense=None, player_
         csv_writer.writerows(data_list)
 
 
+# List of variables to make printing different ANSCII codes easier
 RESET = '\u001b[0m'
 
 
