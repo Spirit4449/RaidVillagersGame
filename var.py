@@ -21,6 +21,7 @@ max_health = 115
 
 raid_attack = 0
 raid_defense = 0
+raid_subdefense = 0
 raid_coins = 0
 double_damage = False
 halftimesdamage = False
@@ -79,10 +80,7 @@ choicecopylist = [
 ]
 
 
-
-
 # Long list of responses to all of the choices above. There are about 5-8 responses per each choice and a range of damage, coins, and health the game can pick from. The weights is the percentage the response can be picked.
-
 
 
 choicehouselist = [
@@ -342,8 +340,6 @@ choicesabotagelist = [
 sabotageweights = [event["weight"] for event in choicesabotagelist]
 
 
-
-
 # Functions
 
 # Reads data of a file
@@ -362,6 +358,8 @@ def read_Data(file_Name):
     return data_List
 
 # Save data function
+
+
 def save_data(player_name=None, player_attack=None, player_defense=None, player_health=None, player_coins=None, loginDate=None):
     # Read data from csv file into a list
     data_list = read_Data('database.csv')
@@ -393,9 +391,9 @@ RESET = '\u001b[0m'
 CLEAR_LINE = '\u001b[2K'
 CLEAR_SCREEN = '\u001b[2J'
 
-UP = '\u001b[1A'
-Down = '\u001b[1B'
-Right = '\u001b[1C'
-Left = '\u001b[2D'
+UP = '\x1B[A'
+DOWN = '\u001b[1B'
+RIGHT = '\u001b[1C'
+LEFT = '\u001b[2D'
 
-DEL = '<none>'
+DEL = '\x1B[2K'

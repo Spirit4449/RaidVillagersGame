@@ -2,14 +2,14 @@ import time
 import random
 import var
 import sys
-import traceback
-import logging
 from colorama import Fore, Style, init
 
 # Initializes colorama
 init(autoreset=True)
 
 # Print slow function
+
+
 def print_slow(text, speed=0.01):
     for character in text:
         sys.stdout.write(character)
@@ -17,6 +17,8 @@ def print_slow(text, speed=0.01):
         time.sleep(speed)
 
 # Starts the battle. Sets village health etc..
+
+
 def battle_start(tutorial=None):
     # Changes state of the game
     var.state = 'battle'
@@ -59,7 +61,7 @@ def battle_start(tutorial=None):
 Your Stats:
 🗡️  Attack: {Fore.MAGENTA}{str(var.player_attack)}{Fore.RESET}
 🛡️  Defense: {Fore.GREEN}{str(var.player_defense)}{Fore.RESET}
-❤️  Health: {Fore.LIGHTRED_EX}{str(var.player_health)}{Fore.RESET}
+❤️  Health: {Fore.RED}{str(var.player_health)}{Fore.RESET}
 """)
 
     time.sleep(2)
@@ -149,7 +151,8 @@ def battle(player_weapon):
     # If they destroy the village
     if var.village_health <= 0:
         var.player_attack -= var.raid_attack
-        var.player_defense += var.raid_defense
+        var.player_defense -= var.raid_defense
+        var.player_defense += var.raid_subdefense 
         print('\n' + Fore.GREEN + 'Congratulations, you have successfully destroyed the village! You gained a total of ' +
               Fore.LIGHTYELLOW_EX + str(var.raid_coins) + Fore.GREEN + ' coins!')
         var.player_coins += var.raid_coins
@@ -163,14 +166,10 @@ def battle(player_weapon):
     if var.player_health <= 0:
         # If the player dies with a lifesaver
         if var.lifesaver == True:
-            print(Fore.MAGENTA + 'You were killed in the battle but your lifesaver saved you! You have 1 health left. The battle has ended.')
-            var.player_health = 1
-            var.player_coins += var.raid_coins
-            var.raid_coins = 0
-            var.raid_attack = 0
-            var.raid_defense = 0
+            print(Fore.MAGENTA + 'You were killed in the battle but your lifesaver saved you! The battle continues!')
+            var.player_health = var.max_health
             var.lifesaver = False
-            return
+            time.sleep(2)
 
         # If the player dies without a lifesaver
         else:
@@ -213,7 +212,6 @@ def battle(player_weapon):
     # Readds all the choices into the list
     var.choicelist.extend(var.choicecopylist)
 
-
     print('\nChoose an option from the following:\n' + 'a) ' +
           choice1 + '\n' + 'b) ' + choice2 + '\n' + 'c) ' + choice3 + '\n')
     time.sleep(.2)
@@ -222,7 +220,7 @@ def battle(player_weapon):
         # Saves data
         var.save_data(var.name, var.player_attack,
                       var.player_defense, var.player_health, var.player_coins)
-        
+
         # Player chooses their choice
         print_slow('Your choice: ')
         player_choice = input(Fore.CYAN)
@@ -314,7 +312,6 @@ def battle_result(player_choice, player_weapon):
                 selected_event, xcoins=var.choicedisablelist[1]["xcoins"], ycoins=var.choicedisablelist[1]["ycoins"])
             var.player_attack = int(var.player_attack * 2)
             var.double_damage = True
-            var.extra_damage == True
         elif selected_event == var.choicedisablelist[2]['event']:
             result_creator(
                 selected_event, xdmg=var.choicedisablelist[2]["xdmg"], ydmg=var.choicedisablelist[2]["ydmg"], xcoins=var.choicedisablelist[2]['xcoins'], ycoins=var.choicedisablelist[2]['ycoins'])
@@ -361,7 +358,7 @@ def battle_result(player_choice, player_weapon):
             result_creator(selected_event)
             var.player_health += 20
             if var.player_health >= var.max_health:
-              var.player_health = var.max_health
+                var.player_health = var.max_health
         elif selected_event == var.choicehidelist[6]['event']:
             result_creator(
                 selected_event, xhlth=var.choicehidelist[6]["xhlth"], yhlth=var.choicehidelist[6]["yhlth"])
@@ -404,7 +401,7 @@ def battle_result(player_choice, player_weapon):
                            ["ydmg"], xcoins=var.choicemarketlist[0]["xcoins"], ycoins=var.choicemarketlist[0]["ycoins"])
         elif selected_event == var.choicemarketlist[1]['event']:
             result_creator(
-                selected_event, xcoins=var.choicemarketlist[1]["xcoins"], ycoins=var.choicemarketlist[1]["ycoins"])
+                selected_event, xdmg=var.choicemarketlist[1]["xdmg"], ydmg=var.choicemarketlist[1]["ydmg"], xcoins=var.choicemarketlist[1]["xcoins"], ycoins=var.choicemarketlist[1]["ycoins"])
         elif selected_event == var.choicemarketlist[2]['event']:
             result_creator(
                 selected_event, xhlth=var.choicemarketlist[2]["xhlth"], yhlth=var.choicemarketlist[2]["yhlth"])
@@ -505,7 +502,7 @@ def battle_result(player_choice, player_weapon):
             result_creator(
                 selected_event, xcoins=var.choiceransomlist[3]["xcoins"], ycoins=var.choiceransomlist[3]["ycoins"])
             var.player_defense -= 3
-            var.raid_defense -= 3
+            var.raid_subdefense -= 3
         elif selected_event == var.choiceransomlist[4]['event']:
             result_creator(selected_event)
         elif selected_event == var.choiceransomlist[5]['event']:
@@ -619,10 +616,12 @@ def battle_result(player_choice, player_weapon):
     if var.double_damage == True:
         var.double_damage = False
         var.player_attack /= 2
+        print('decrease damage', var.player_attack)
 
     if var.halftimesdamage == True:
         var.halftimesdamage = False
         var.player_attack /= 1.5
+        print('decreased attack', var.player_attack)
 
     if var.village_health <= 0:
         var.village_health = 0
@@ -634,41 +633,33 @@ def battle_result(player_choice, player_weapon):
     battle(player_weapon)
 
 
-try:
-    def result_creator(selected_event, xdmg=None, ydmg=None, xcoins=None, ycoins=None, xhlth=None, yhlth=None):
+def result_creator(selected_event, xdmg=None, ydmg=None, xcoins=None, ycoins=None, xhlth=None, yhlth=None):
 
+    # This is where the good stuff happens. It changes the values of the player depending on what response the game picked. It also changes the responses with the updated values that it picked
+    if '**' in selected_event:
+        random_attack = random.randrange(xdmg, ydmg)
+        attack = int((var.player_attack * 80 / 100) +
+                     (random_attack * 80 / 100))
+        var.village_health -= attack
+        selected_event = selected_event.replace(
+            "**", Fore.MAGENTA + str(attack) + Fore.RESET)
+    if '++' in selected_event:
+        random_coins = random.randrange(xcoins, ycoins)
+        if var.coindoubler == True:
+            random_coins *= 2
+        var.raid_coins += random_coins
+        selected_event = selected_event.replace(
+            "++", Fore.LIGHTYELLOW_EX + str(random_coins) + Fore.RESET)
 
+    if '--' in selected_event:
+        random_damage = random.randrange(xhlth, yhlth)
+        health = int(random_damage * 90 / 100)
 
-        # This is where the good stuff happens. It changes the values of the player depending on what response the game picked. It also changes the responses with the updated values that it picked
-        if '**' in selected_event:
-            random_attack = random.randrange(xdmg, ydmg)
-            attack = int((var.player_attack * 80 / 100) +
-                         (random_attack * 80 / 100))
-            var.village_health -= attack
-            selected_event = selected_event.replace(
-                "**", Fore.MAGENTA + str(attack) + Fore.RESET)
-        if '++' in selected_event:
-            random_coins = random.randrange(xcoins, ycoins)
-            if var.coindoubler == True:
-                random_coins *= 2
-                var.raid_coins += random_coins
-                selected_event = selected_event.replace(
-                "++", Fore.LIGHTYELLOW_EX + str(random_coins) + Fore.RESET)
-       
-        if '--' in selected_event:
-            random_damage = random.randrange(xhlth, yhlth)
-            health = int(random_damage * 90 / 100)
+        health = int(health + (var.player_health * 10 / 100))
+        healt = int(health - (var.player_defense * 95 / 100))
 
-            health = int(health + ((var.player_health * 10 / 100) +
-                         (var.player_defense * 95 / 100)))
+        selected_event = selected_event.replace(
+            "--", Fore.RED + str(health) + Fore.RESET)
+        var.player_health -= health
 
-            selected_event = selected_event.replace(
-                "--", Fore.RED + str(health) + Fore.RESET)
-            var.player_health -= health
-
-        print(selected_event)
-
-# Just in case this code bugs out. (its happened before...)
-except Exception:
-    print('An error occured :(')
-    #logging.error(traceback.format_exc())
+    print(selected_event)
