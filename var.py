@@ -25,6 +25,8 @@ raid_subdefense = 0
 raid_coins = 0
 double_damage = False
 halftimesdamage = False
+round = 0
+round2 = 0
 
 village_health = None
 
@@ -35,11 +37,11 @@ generated_Data = []
 
 # These people can use admincommands. (lol)
 admins = ['nischay', 'george', 'logan',
-          'mr. daab', 'mrdaab', 'mr daab', 'charles', 'mr. lin']
+          'mr. daab', 'mrdaab', 'mr daab', 'daab', 'charles', 'mr. lin']
 
 # Weapons
 weaponlist = ['katana', 'ak47', 'sword', 'knife', 'grenade', 'stick', 'baseball bat', 'shotgun', 'atomic bomb', 'bow and arrow', 'spear', 'electric rifle', 'pistol', 'water gun', 'shuriken',
-              'nunchucks', 'poison bottle', 'rocket launcher' 'machine gun', 'dynamite', 'bomb', 'dagger', 'revolver', 'targeted missiles', 'hand cannon', 'hamer', 'boomerang', 'javelin', 'plasma gun']
+              'nunchucks', 'poison bottle', 'rocket launcher', 'machine gun', 'dynamite', 'bomb', 'dagger', 'revolver', 'targeted missiles', 'hand cannon', 'hammer', 'boomerang', 'javelin', 'plasma gun']
 
 # Choices
 choicelist = [
@@ -360,7 +362,7 @@ def read_Data(file_Name):
 # Save data function
 
 
-def save_data(player_name=None, player_attack=None, player_defense=None, player_health=None, player_coins=None, loginDate=None):
+def save_data(player_name=None, player_attack=None, player_defense=None, player_health=None, max_health=None, player_coins=None, loginDate=None):
     # Read data from csv file into a list
     data_list = read_Data('database.csv')
 
@@ -373,10 +375,12 @@ def save_data(player_name=None, player_attack=None, player_defense=None, player_
                 data_list[i][2] = player_defense
             if player_health != None:
                 data_list[i][3] = player_health
+            if max_health != None:
+                data_list[i][4] = max_health
             if player_coins != None:
-                data_list[i][4] = player_coins
+                data_list[i][5] = player_coins
             if loginDate != None:
-                data_list[i][5] = loginDate
+                data_list[i][6] = loginDate
 
     # Write the updated data back to the csv file
     with open('database.csv', 'w', newline='') as file:

@@ -150,6 +150,15 @@ def battle(player_weapon):
 
     # If they destroy the village
     if var.village_health <= 0:
+        if var.halftimesdamage == True:
+          var.player_attack /= 1.5
+          var.halftimesdamage = False
+          var.player_attack = round(var.player_attack)
+        if var.double_damage == True:
+          var.player_attack /= 2
+          var.double_damage = False
+          var.player_attack = round(var.player_attack)
+          
         var.player_attack -= var.raid_attack
         var.player_defense -= var.raid_defense
         var.player_defense += var.raid_subdefense 
@@ -219,7 +228,7 @@ def battle(player_weapon):
     while True:
         # Saves data
         var.save_data(var.name, var.player_attack,
-                      var.player_defense, var.player_health, var.player_coins)
+                      var.player_defense, var.player_health, var.max_health, var.player_coins)
 
         # Player chooses their choice
         print_slow('Your choice: ')
@@ -502,7 +511,7 @@ def battle_result(player_choice, player_weapon):
             result_creator(
                 selected_event, xcoins=var.choiceransomlist[3]["xcoins"], ycoins=var.choiceransomlist[3]["ycoins"])
             var.player_defense -= 3
-            var.raid_subdefense -= 3
+            var.raid_subdefense += 3
         elif selected_event == var.choiceransomlist[4]['event']:
             result_creator(selected_event)
         elif selected_event == var.choiceransomlist[5]['event']:
@@ -511,11 +520,8 @@ def battle_result(player_choice, player_weapon):
         elif selected_event == var.choiceransomlist[6]['event']:
             result_creator(
                 selected_event, xhlth=var.choiceransomlist[6]["xhlth"], yhlth=var.choiceransomlist[6]["yhlth"])
-            coinloss = random.randrange(50, 100)
-            if '@@' in selected_event:
-                selected_event = selected_event.replace('@@', coinloss)
-                var.player_coins = int(var.player_coins - coinloss)
 
+  
     if player_choice == var.choicelist[11]:
         selected_event = random.choices(
             var.choicesabotagelist, weights=var.sabotageweights, k=1)[0]
@@ -614,21 +620,26 @@ def battle_result(player_choice, player_weapon):
 
     time.sleep(2.5)
     if var.double_damage == True:
-        var.double_damage = False
-        var.player_attack /= 2
-        print('decrease damage', var.player_attack)
+        var.round += 1
+        if var.round == 2:
+          var.player_attack /= 2
+          var.double_damage = False
+          var.player_attack = round(var.player_attack)
 
     if var.halftimesdamage == True:
-        var.halftimesdamage = False
-        var.player_attack /= 1.5
-        print('decreased attack', var.player_attack)
+        var.round2 += 1
+        if var.round2 == 2:
+          var.player_attack /= 1.5
+          var.halftimesdamage = False
+          var.player_attack = round(var.player_attack)
+
 
     if var.village_health <= 0:
         var.village_health = 0
     if var.player_health <= 0:
         var.player_health = 0
-    print('       🛖 Village health: ' + str(var.village_health) +
-          '\n' + '       ❤️ Your health: ' + str(var.player_health))
+    print('       🛖  Village health: ' + str(var.village_health) +
+          '\n' + '       ❤️  Your health: ' + str(var.player_health))
     time.sleep(1)
     battle(player_weapon)
 
@@ -648,18 +659,25 @@ def result_creator(selected_event, xdmg=None, ydmg=None, xcoins=None, ycoins=Non
         if var.coindoubler == True:
             random_coins *= 2
         var.raid_coins += random_coins
+        random_coins = random_coins + int(var.player_coins * 1 / 100)
+        var.player_coins += random_coins
         selected_event = selected_event.replace(
             "++", Fore.LIGHTYELLOW_EX + str(random_coins) + Fore.RESET)
 
     if '--' in selected_event:
         random_damage = random.randrange(xhlth, yhlth)
-        health = int(random_damage * 90 / 100)
+        health = random_damage
 
         health = int(health + (var.player_health * 10 / 100))
-        healt = int(health - (var.player_defense * 95 / 100))
+        health = int(health - (var.player_defense * 40 / 100))
 
         selected_event = selected_event.replace(
             "--", Fore.RED + str(health) + Fore.RESET)
         var.player_health -= health
 
+
+    if '@@' in selected_event:
+      coinloss = random.randrange(50, 100)
+      selected_event = selected_event.replace('@@', str(coinloss))
+      var.player_coins = int(var.player_coins - int(coinloss))
     print(selected_event)
