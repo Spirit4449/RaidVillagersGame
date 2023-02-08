@@ -311,17 +311,18 @@ elif int(today.strftime("%y")) - int(loginlist[2]) > 0 or int(
   print_slow('Would you like a quick tutorial? ', 0.01)
   quicktutorial = input(Fore.CYAN)
   print(Style.RESET_ALL, end="")
-  if quicktutorial.lower() == 'yes':
-    var.tutorial = True
-    print("Ok, here is a quick tutorial. Lets start by going into a battle.")
-    time.sleep(2)
-    battle_start(True)
-  if quicktutorial.lower() == 'no':
-    print("Ok. If you need a list of commands type " + Fore.CYAN + "/help\n")
-  else:
-    print(
-      "That is not a valid option! I guess you don't want a tutorial. If you ever need a list of commands, just type"
-      + Fore.YELLOW + "/help")
+  while True:
+    if quicktutorial.lower() == 'yes':
+        var.tutorial = True
+        print("Ok, here is a quick tutorial. Lets start by going into a battle.")
+        time.sleep(2)
+        battle_start(True)
+        break
+    elif quicktutorial.lower() == 'no':
+        print("Ok. If you need a list of commands type " + Fore.CYAN + "/help\n")
+        break
+    else:
+        print("That is not a valid option!")
 
 # A quick welcome for the returning player
 else:
@@ -340,8 +341,15 @@ var.save_data(var.name, var.player_attack, var.player_defense,
 
 # At this point the tutorial is almost finished. The player is ready to explore on their own.
 if var.tutorial == True:
+  time.sleep(1)
+  print('You completed your first battle!')
+  time.sleep(1)
   print(
-    f'You are now ready to play the game! Type {Fore.YELLOW}/help{Fore.RESET} to view the list of commands...'
+    f"""You are now ready to play the game! Here are some quick pointers:
+The game is command based. You type commands to execute actions
+The goal is to upgrade all your stats to level 10.
+Battling gives you coins so you can upgrade stats and buy stuff from the shop{Style.RESET_ALL}
+Type {Fore.YELLOW}/help{Fore.RESET} to view the list of commands..."""
   )
   var.tutorial = False
 
@@ -356,6 +364,7 @@ for name in adminlist:
   if str(var.name) == name[0]:
     time.sleep(0.5)
     print('This account also has admin commands: ' + Fore.YELLOW + '/admincommands')
+    var.admin = True
 
 # Main loop for the game. The player has the freedom to type whatever commands they want while this loop is running. The game responds depending on which command the player chose
 while True:
@@ -383,7 +392,7 @@ while True:
           end="")
 
     # If the player is an admin it displays an extra command
-    if var.name in var.admins:
+    if var.admin == True:
       print(
         Fore.LIGHTBLACK_EX +
         '💎 /admincommands - displays a list of commands only admins can use\n')
@@ -415,7 +424,7 @@ while True:
         if var.player_health >= var.max_health:
           var.player_health = var.max_health
         print(Fore.GREEN +
-              'You just bought a meat for 100 coins! Your health is now ' +
+              'You just bought a meat for 50 coins! Your health is now ' +
               str(var.player_health))
       else:
         print(Fore.RED + "You don't have enough coins to buy that!")
@@ -637,7 +646,7 @@ Stats for {var.name}:
   # Admin command /givecoins
   elif '/givecoins' in command or '/setcoins' in command:
     valid_command = True
-    if var.name in var.admins:
+    if var.admin == True:
       if ' ' in command:
         splitlist = command.split(" ")
         try:
@@ -660,7 +669,7 @@ Stats for {var.name}:
   # Admin command /sethealth
   elif '/sethealth' in command:
     valid_command = True
-    if var.name in var.admins:
+    if var.admin == True:
       if ' ' in command:
         splitlist = command.split(" ")
         try:
@@ -681,7 +690,7 @@ Stats for {var.name}:
   # Admin command /setattack
   elif '/setattack' in command:
     valid_command = True
-    if var.name in var.admins:
+    if var.admin == True:
       if ' ' in command:
         splitlist = command.split(" ")
         try:
@@ -697,7 +706,7 @@ Stats for {var.name}:
   # Admin command /setdefense
   elif '/setdefense' in command:
     valid_command = True
-    if var.name in var.admins:
+    if var.admin == True:
       if ' ' in command:
         splitlist = command.split(" ")
         try:
@@ -712,7 +721,7 @@ Stats for {var.name}:
 
   # Funny command. I created it for fun
   elif command == '/hack':
-    if var.name in var.admins:
+    if var.admin == True:
       print('I warned you not to run this command...')
       time.sleep(1)
       for i in range(0, 16):
@@ -736,7 +745,7 @@ Stats for {var.name}:
   # Utility command to help test the game
   elif command == '/resetall':
     valid_command = True
-    if var.name in var.admins:
+    if var.admin == True:
       var.player_attack = 5
       var.player_defense = 5
       var.player_coins = 0
@@ -748,7 +757,7 @@ Stats for {var.name}:
 
   # Debugging command that displays multiple variables
   elif command == '/variables':
-    if var.name in var.admins:
+    if var.admin == True:
       print(f"""
 Name: {var.name}\nLogin Date: {var.loginDate}\nAttack: {var.player_attack}\nDefense: {var.player_defense}\nHealth: {var.player_health}\nMax Health: {var.max_health}\nLifesaver: {var.lifesaver}\nCoin Doubler: {var.coindoubler}\n\nVillage Health: {var.village_health}\nRaid Atk: {var.raid_attack}\nRaid Def: {var.raid_defense}\nRaid Coins: {var.raid_coins}\nDouble Damage: {var.double_damage}\n1.5x Damge: {var.halftimesdamage}\n\nAdmins: {var.admins}
 """)
@@ -758,7 +767,7 @@ Name: {var.name}\nLogin Date: {var.loginDate}\nAttack: {var.player_attack}\nDefe
   # Command to automatically win the game
   elif command == '/win':
     valid_command == True
-    if var.name in var.admins:
+    if var.admin == True:
       var.player_attack = 50
       var.player_defense = 50
       var.player_health = 250
@@ -782,7 +791,7 @@ Name: {var.name}\nLogin Date: {var.loginDate}\nAttack: {var.player_attack}\nDefe
 
   # Similar to help command, displays a list of commands that can only be used by admins
   elif command == '/admincommands':
-    if var.name in var.admins:
+    if var.admin == True:
       valid_command = True
       print(f"""
 💎 /admincommands - displays a list of commands that only admins can use

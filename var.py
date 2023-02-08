@@ -32,6 +32,7 @@ village_health = None
 
 lifesaver = False
 coindoubler = False
+admin = False
 
 generated_Data = []
 

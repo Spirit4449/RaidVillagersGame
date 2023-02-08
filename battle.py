@@ -29,7 +29,7 @@ def battle_start(tutorial=None):
 
     # if the tutorial is true, it will guide them through the battle and make it easier to win
     if var.tutorial == True:
-        var.village_health = random.randrange(70, 80)
+        var.village_health = random.randrange(40, 70)
     # Range of values if player attack is less than 10
     elif var.player_attack <= 10:
         minimum = int((var.player_attack * 150 / 100)) + \
